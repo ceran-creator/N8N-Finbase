@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n Intelligent Finance</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo-container">
+                        <img src="设计图/Logo-2.png" alt="n8n Intelligent Finance" class="header-logo">
+                    </div>
+                    <button class="action-icon" title="AI Modules">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button class="action-icon" title="Share">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        <button class="action-icon" title="More Questions">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                        <button class="action-icon new-chat-btn" title="New Chat">
+                            <i class="fas fa-plus"></i>
+                            <span class="new-chat-text">New Chat</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-content">
+                    <!-- Navigation -->
+                    <nav class="nav-menu">
+                        <div class="nav-item active">
+                            <div class="nav-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <span class="nav-text">Home</span>
+                        </div>
+                        
+                        <div class="nav-item" onclick="navigateToLibrary()">
+                            <div class="nav-icon">
+                                <i class="fas fa-folder"></i>
+                            </div>
+                            <span class="nav-text">Library</span>
+                        </div>
+                        
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <span class="nav-text">History</span>
+                        </div>
+                        
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <span class="nav-text">Favorites</span>
+                        </div>
+                    </nav>
+                    
+                    <!-- Bottom: Settings & User -->
+                    <div class="sidebar-bottom">
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <span class="nav-text">Settings</span>
+                        </div>
+                        
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span class="nav-text">User</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 折叠按钮 -->
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </aside>
+
+            <!-- Main -->
+            <main class="main-content">
+                <div class="content-wrapper">
+                    <!-- Welcome -->
+                    <section class="welcome-section">
+                        <h2 class="welcome-title">Welcome to the Intelligent Finance System</h2>
+                        <p class="welcome-subtitle">Let AI be your finance co‑pilot. Make every decision with data.</p>
+                    </section>
+
+                    <!-- Core Modules -->
+                    <section class="modules-section">
+                        <div class="modules-grid three-modules">
+                            <!-- Funds -->
+                            <div class="module-card" data-module="funds">
+                                <div class="module-icon">
+                                    <img src="设计图/icon-资金2.png" alt="Funds" class="module-icon-img">
+                                </div>
+                                <h3 class="module-title">Funds</h3>
+                                <p class="module-description">Statement import, real‑time monitoring, tiered approvals</p>
+                                <div class="module-stats">
+                                    <span class="stat-item">Today: ¥85,000</span>
+                                    <span class="stat-item">Pending approvals: 3</span>
+                                </div>
+                            </div>
+
+                            <!-- Accounting -->
+                            <div class="module-card" data-module="reports">
+                                <div class="module-icon">
+                                    <img src="设计图/icon-核算2.png" alt="Accounting" class="module-icon-img">
+                                </div>
+                                <h3 class="module-title">Accounting</h3>
+                                <p class="module-description">Multi‑frequency reports, budget analysis, cash‑flow forecasts</p>
+                                <div class="module-stats">
+                                    <span class="stat-item">Reports this month: 12</span>
+                                    <span class="stat-item">Budget performance: 93%</span>
+                                </div>
+                            </div>
+
+                            <!-- Supervision -->
+                            <div class="module-card" data-module="compliance">
+                                <div class="module-icon">
+                                    <img src="设计图/icon-监控2.png" alt="Supervise" class="module-icon-img">
+                                </div>
+                                <h3 class="module-title">Supervise</h3>
+                                <p class="module-description">Tax filing, audit trail, policy compliance</p>
+                                <div class="module-stats">
+                                    <span class="stat-item">Compliance checks: 100%</span>
+                                    <span class="stat-item">Risk alerts: 0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </main>
+
+        </div>
+        
+        <!-- Chat input - centered bottom -->
+        <div class="chat-panel">
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <input type="text" class="chat-input" placeholder="Type your question">
+                </div>
+                <div class="chat-actions-row">
+                    <div class="chat-actions-left">
+                        <button class="chat-action-btn" title="Link">
+                            <i class="fas fa-link"></i>
+                        </button>
+                        <button class="chat-action-btn" title="Image">
+                            <i class="fas fa-image"></i>
+                        </button>
+                    </div>
+                    <div class="chat-actions-right">
+                        <button class="chat-send-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

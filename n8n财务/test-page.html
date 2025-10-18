@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n财务系统测试页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .test-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .response-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .response-box.show {
+            display: block;
+        }
+
+        .response-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .response-content {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .error {
+            background: #fee;
+            border-left: 4px solid #f44336;
+        }
+
+        .success {
+            background: #efe;
+            border-left: 4px solid #4caf50;
+        }
+
+        .config-section {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .config-section label {
+            color: #856404;
+        }
+
+        .chat-messages {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 6px;
+        }
+
+        .message.user {
+            background: #667eea;
+            color: white;
+            margin-left: 20%;
+        }
+
+        .message.assistant {
+            background: #e0e0e0;
+            color: #333;
+            margin-right: 20%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏦 n8n财务系统测试页面</h1>
+
+        <!-- API配置区 -->
+        <div class="test-section">
+            <h2>⚙️ API配置</h2>
+            <div class="config-section">
+                <div class="form-group">
+                    <label>✅ API已配置完成</label>
+                    <p style="color: #28a745; margin-top: 10px;">
+                        AI问答: https://lynn-cafa-system.app.n8n.cloud/webhook/financial-chat-webhook/chat<br>
+                        支出审批: https://lynn-cafa-system.app.n8n.cloud/webhook/expense-request-webhook
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI智能问答测试 -->
+        <div class="test-section">
+            <h2>💬 AI智能问答测试</h2>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="form-group">
+                <label>输入您的财务问题</label>
+                <textarea id="chatInput" placeholder="例如：公司的现金流情况如何？"></textarea>
+            </div>
+            <button onclick="sendChatMessage()">发送问题</button>
+            <div class="response-box" id="chatResponse">
+                <h3>AI回复：</h3>
+                <div class="response-content" id="chatResponseContent"></div>
+            </div>
+        </div>
+
+        <!-- 支出审批测试 -->
+        <div class="test-section">
+            <h2>💰 支出审批流程测试</h2>
+            <div class="form-group">
+                <label>申请人</label>
+                <input type="text" id="applicant" value="张三" placeholder="输入申请人姓名">
+            </div>
+            <div class="form-group">
+                <label>金额（元）</label>
+                <input type="number" id="amount" value="3000" placeholder="输入申请金额">
+            </div>
+            <div class="form-group">
+                <label>类别</label>
+                <select id="category">
+                    <option value="办公用品">办公用品</option>
+                    <option value="设备采购">设备采购</option>
+                    <option value="差旅费">差旅费</option>
+                    <option value="市场推广">市场推广</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>描述</label>
+                <textarea id="description" placeholder="请描述支出用途">采购办公文具</textarea>
+            </div>
+            <div class="form-group">
+                <label>部门</label>
+                <input type="text" id="department" value="行政部" placeholder="输入所属部门">
+            </div>
+            <button onclick="submitExpense()">提交审批申请</button>
+            <div class="response-box" id="expenseResponse">
+                <h3>审批结果：</h3>
+                <div class="response-content" id="expenseResponseContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // AI聊天API地址
+        const CHAT_API_URL = 'https://lynn-cafa-system.app.n8n.cloud/webhook/financial-chat-webhook/chat';
+        const EXPENSE_API_URL = 'https://lynn-cafa-system.app.n8n.cloud/webhook/expense-request-webhook';
+
+        // AI聊天功能
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message) {
+                alert('请输入问题');
+                return;
+            }
+
+            // 显示用户消息
+            addMessage('user', message);
+
+            const responseBox = document.getElementById('chatResponse');
+            const responseContent = document.getElementById('chatResponseContent');
+
+            responseBox.className = 'response-box show';
+            responseContent.textContent = '正在思考...';
+
+            try {
+                const response = await fetch(CHAT_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'sendMessage',
+                        chatInput: message
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // 显示AI回复
+                const aiMessage = data.output || data.message || JSON.stringify(data, null, 2);
+                addMessage('assistant', aiMessage);
+                responseContent.textContent = JSON.stringify(data, null, 2);
+                responseContent.parentElement.className = 'response-content success';
+
+                // 清空输入框
+                input.value = '';
+
+            } catch (error) {
+                responseContent.textContent = `错误: ${error.message}`;
+                responseContent.parentElement.className = 'response-content error';
+                addMessage('assistant', `错误: ${error.message}`);
+            }
+        }
+
+        // 添加聊天消息到界面
+        function addMessage(type, content) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = content;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // 提交支出审批
+        async function submitExpense() {
+            const expenseData = {
+                applicant: document.getElementById('applicant').value,
+                amount: parseFloat(document.getElementById('amount').value),
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                department: document.getElementById('department').value,
+                requestDate: new Date().toISOString().split('T')[0]
+            };
+
+            const responseBox = document.getElementById('expenseResponse');
+            const responseContent = document.getElementById('expenseResponseContent');
+
+            responseBox.className = 'response-box show';
+            responseContent.textContent = '正在处理审批...';
+
+            try {
+                const response = await fetch(EXPENSE_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(expenseData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                responseContent.textContent = JSON.stringify(data, null, 2);
+                responseContent.parentElement.className = 'response-content success';
+
+            } catch (error) {
+                responseContent.textContent = `错误: ${error.message}\n\n请确保：\n1. n8n实例正在运行\n2. 工作流已激活\n3. URL配置正确`;
+                responseContent.parentElement.className = 'response-content error';
+            }
+        }
+
+        // 回车发送消息
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendChatMessage();
+            }
+        });
+    </script>
+</body>
+</html>

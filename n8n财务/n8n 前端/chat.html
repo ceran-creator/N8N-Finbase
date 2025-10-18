@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - n8n Intelligent Finance</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="chat-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo-container">
+                        <img src="设计图/Logo-2.png" alt="n8n Intelligent Finance" class="header-logo">
+                    </div>
+                    <div class="chat-title-section">
+                        <div class="chat-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="chat-title-info">
+                            <h1 class="chat-title">AI财务专家 <span class="connection-status" id="connectionStatus">🟢</span></h1>
+                            <p class="chat-subtitle">n8n智能财务管理系统 - 专业财务分析与问答助手</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button class="action-icon" title="Share">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        <button class="action-icon" title="More Questions">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                        <button class="action-icon new-chat-btn" title="New Chat">
+                            <i class="fas fa-plus"></i>
+                            <span class="new-chat-text">New Chat</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-content">
+                    <!-- Search -->
+                    <div class="search-section">
+                        <div class="search-input-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="search-input" placeholder="Search for chats...">
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <nav class="nav-menu">
+                        <div class="nav-item" onclick="navigateToHome()">
+                            <div class="nav-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <span class="nav-text">Home</span>
+                            <span class="nav-shortcut">⌘H</span>
+                        </div>
+                        
+                        <div class="nav-item" onclick="navigateToLibrary()">
+                            <div class="nav-icon">
+                                <i class="fas fa-folder"></i>
+                            </div>
+                            <span class="nav-text">Library</span>
+                            <span class="nav-shortcut">⌘T</span>
+                        </div>
+                        
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <span class="nav-text">History</span>
+                            <span class="nav-shortcut">⌘G</span>
+                        </div>
+                        
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <span class="nav-text">Save</span>
+                            <span class="nav-shortcut">⌘L</span>
+                        </div>
+                    </nav>
+
+                    <!-- Recent Chats -->
+                    <div class="recent-chats-section">
+                        <h3 class="section-title">Recent Chats</h3>
+                        <div class="recent-chats-list">
+                            <div class="recent-chat-item">
+                                <div class="chat-preview">Write a Shakespearean sonnet about a cat that...</div>
+                            </div>
+                            <div class="recent-chat-item">
+                                <div class="chat-preview">If cereal commercials were directed by Christo...</div>
+                            </div>
+                            <div class="recent-chat-item active">
+                                <div class="chat-preview">TechStart Solutions Co, Ltd. - Quarterly Fina...</div>
+                            </div>
+                            <div class="recent-chat-item">
+                                <div class="chat-preview">Describe a medieval jousting tournament wher...</div>
+                            </div>
+                            <div class="recent-chat-item">
+                                <div class="chat-preview">What would a job interview be like if aliens wer...</div>
+                            </div>
+                            <div class="recent-chat-item">
+                                <div class="chat-preview">Generate a rap battle between a sentient toaste...</div>
+                            </div>
+                            <div class="recent-chat-item">
+                                <div class="chat-preview">What if oxygen was actually a hallucinogen, and...</div>
+                            </div>
+                            <div class="recent-chat-item">
+                                <div class="chat-preview">Pitch a reality TV show where ghosts haunt infl...</div>
+                            </div>
+                        </div>
+                        <button class="view-all-btn">View All →</button>
+                    </div>
+                    
+                    <!-- Bottom: Settings & User -->
+                    <div class="sidebar-bottom">
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <span class="nav-text">Settings</span>
+                        </div>
+                        
+                        <div class="nav-item user-profile">
+                            <div class="nav-icon user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span class="nav-text">Andrew Neilson</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 折叠按钮 -->
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </aside>
+
+            <!-- Main Chat Area -->
+            <main class="chat-main">
+                <div class="chat-container">
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- User Message -->
+                        <div class="message user-message">
+                            <div class="message-avatar">
+                                <span>An</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I need the financial report and general information of TechStart Solutions Co, Ltd. for the third quarter of 2024.</p>
+                            </div>
+                        </div>
+
+                        <!-- AI Response -->
+                        <div class="message ai-message">
+                            <div class="message-avatar">
+                                <div class="ai-avatar">
+                                    <img src="设计图/Logo-图标.png" alt="AI Assistant">
+                                </div>
+                            </div>
+                            <div class="message-content">
+                                <div class="financial-report">
+                                    <div class="report-header">
+                                        <h2>Quarterly Financial Report (Q3 2024)</h2>
+                                        <h3>TechStart Solutions Co., Ltd.</h3>
+                                        <p class="report-description">This is the relevant information regarding the quarterly financial report of TechStart Solutions Limited for the third quarter of 2024.</p>
+                                    </div>
+
+                                    <div class="financial-tables">
+                                        <!-- Revenue Table -->
+                                        <div class="financial-table">
+                                            <h4 class="table-title">报表表 (2024年第三季度)</h4>
+                                            <table class="data-table revenue-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>单位</th>
+                                                        <th>Q3 2024</th>
+                                                        <th>Q2 2024</th>
+                                                        <th>同比增长</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>营业收入</td>
+                                                        <td></td>
+                                                        <td>185,000</td>
+                                                        <td>140,000</td>
+                                                        <td class="positive">+30.3%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>一次性服务费</td>
+                                                        <td></td>
+                                                        <td>28,000</td>
+                                                        <td>35,000</td>
+                                                        <td class="negative">-20.0%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>总收入</td>
+                                                        <td></td>
+                                                        <td>213,000</td>
+                                                        <td>177,000</td>
+                                                        <td class="positive">+20.3%</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- Expenses Table -->
+                                        <div class="financial-table">
+                                            <h4 class="table-title">费用表</h4>
+                                            <table class="data-table expenses-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>Q3 2024</th>
+                                                        <th>Q2 2024</th>
+                                                        <th>同比增长</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>销售成本</td>
+                                                        <td>42,600</td>
+                                                        <td>35,400</td>
+                                                        <td class="positive">+20.3%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>毛利润</td>
+                                                        <td>170,400</td>
+                                                        <td>141,600</td>
+                                                        <td class="positive">+20.3%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>研发费用</td>
+                                                        <td>85,000</td>
+                                                        <td>73,000</td>
+                                                        <td class="positive">+16.4%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>销售与营销</td>
+                                                        <td>52,000</td>
+                                                        <td>48,000</td>
+                                                        <td class="positive">+8.3%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>管理费用</td>
+                                                        <td>35,000</td>
+                                                        <td>32,000</td>
+                                                        <td class="positive">+9.4%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>总运营费用</td>
+                                                        <td>172,000</td>
+                                                        <td>153,000</td>
+                                                        <td class="positive">+8.9%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>营业利润</td>
+                                                        <td>-1,600</td>
+                                                        <td>-11,400</td>
+                                                        <td class="positive">+86.0%</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Key Insights -->
+                                    <div class="key-insights">
+                                        <ul>
+                                            <li>The subscription revenue was $185,000, representing a year-on-year increase of 30.3%, and it was the main driver of the revenue growth.</li>
+                                            <li>The one-time service fee was $28,000, down 20.0% year-on-year. This part of the revenue performed poorly.</li>
+                                            <li>The total revenue reached $213,000, representing a year-on-year increase of 20.3%. The overall revenue showed an upward trend.</li>
+                                            <li>The total operating expenses were $172,000, up 8.9% year-on-year. The growth rate was lower than that of the total revenue, and there was some effect in cost control.</li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- PDF Download -->
+                                    <div class="pdf-download">
+                                        <div class="pdf-info">
+                                            <div class="pdf-icon">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </div>
+                                            <div class="pdf-details">
+                                                <span class="pdf-label">PDF</span>
+                                                <span class="pdf-filename">TechStart Solutions_Third Quarter of 2024.pdf</span>
+                                            </div>
+                                        </div>
+                                        <div class="pdf-actions">
+                                            <button class="pdf-action-btn" title="Share">
+                                                <i class="fas fa-share-alt"></i>
+                                            </button>
+                                            <button class="pdf-action-btn" title="Favorite">
+                                                <i class="fas fa-heart"></i>
+                                            </button>
+                                            <button class="pdf-action-btn" title="Download">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="chat-input-section">
+                        <div class="chat-input-container">
+                            <div class="input-wrapper">
+                                <div class="floating-label">Ask me a question...</div>
+                                <input type="text" class="chat-input" placeholder="" id="chatInput">
+                                <div class="input-actions">
+                                    <button class="input-action-btn" title="Attach">
+                                        <i class="fas fa-paperclip"></i>
+                                    </button>
+                                    <button class="input-action-btn" title="Image">
+                                        <i class="fas fa-image"></i>
+                                    </button>
+                                    <div class="character-count">0/1000</div>
+                                    <button class="send-btn" id="sendBtn">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="chat-script.js"></script>
+</body>
+</html>

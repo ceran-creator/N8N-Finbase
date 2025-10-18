@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n财务系统URL验证器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .url-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .url-section:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+        
+        .url-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .url-title::before {
+            content: "🔗";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .url-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .url-display {
+            font-family: 'Courier New', monospace;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            word-break: break-all;
+            font-size: 0.9rem;
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .test-button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .result.loading {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-unknown { background: #95a5a6; }
+        .status-success { background: #27ae60; }
+        .status-error { background: #e74c3c; }
+        .status-loading { 
+            background: #f39c12; 
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .summary h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .test-all-btn {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .test-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 184, 148, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 n8n财务系统URL验证器</h1>
+            <p>验证财务报表自动化模块的通信URL可用性和返回内容标准</p>
+        </div>
+        
+        <div class="content">
+            <button class="test-all-btn" onclick="testAllUrls()">🚀 一键测试所有URL</button>
+            
+            <!-- 智能问答触发器 -->
+            <div class="url-section">
+                <div class="url-title">
+                    <span class="status-indicator status-unknown" id="status-chat"></span>
+                    智能财务问答API
+                </div>
+                <div class="url-info">
+                    <strong>功能：</strong>财务智能问答，支持财务数据查询和分析<br>
+                    <strong>方法：</strong>POST<br>
+                    <strong>预期返回：</strong>JSON格式的AI回答
+                </div>
+                <div class="url-display" id="chat-url">
+                    需要n8n实例URL - 格式: https://your-n8n-instance.com/webhook/financial-chat-webhook
+                </div>
+                <button class="test-button" onclick="testChatApi()">测试智能问答</button>
+                <div class="result" id="chat-result" style="display: none;"></div>
+            </div>
+            
+            <!-- 支出申请Webhook -->
+            <div class="url-section">
+                <div class="url-title">
+                    <span class="status-indicator status-unknown" id="status-expense"></span>
+                    支出申请审批API
+                </div>
+                <div class="url-info">
+                    <strong>功能：</strong>处理支出申请和审批流程<br>
+                    <strong>方法：</strong>POST<br>
+                    <strong>预期返回：</strong>审批结果和流程状态
+                </div>
+                <div class="url-display" id="expense-url">
+                    需要n8n实例URL - 格式: https://your-n8n-instance.com/webhook/expense-request-webhook
+                </div>
+                <button class="test-button" onclick="testExpenseApi()">测试支出申请</button>
+                <div class="result" id="expense-result" style="display: none;"></div>
+            </div>
+            
+            <!-- 财务报表生成 -->
+            <div class="url-section">
+                <div class="url-title">
+                    <span class="status-indicator status-unknown" id="status-report"></span>
+                    财务报表生成API
+                </div>
+                <div class="url-info">
+                    <strong>功能：</strong>触发财务报表自动生成<br>
+                    <strong>方法：</strong>POST<br>
+                    <strong>预期返回：</strong>报表生成状态和下载链接
+                </div>
+                <div class="url-display" id="report-url">
+                    基于定时触发器 - 可通过手动触发测试
+                </div>
+                <button class="test-button" onclick="testReportGeneration()">测试报表生成</button>
+                <div class="result" id="report-result" style="display: none;"></div>
+            </div>
+            
+            <!-- URL配置区域 -->
+            <div class="url-section">
+                <div class="url-title">
+                    ⚙️ URL配置
+                </div>
+                <div class="url-info">
+                    <strong>配置您的n8n实例URL：</strong>
+                    <input type="text" id="n8n-base-url" placeholder="https://your-n8n-instance.com" 
+                           style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px;">
+                    <button class="test-button" onclick="updateUrls()">更新URL</button>
+                </div>
+            </div>
+            
+            <div class="summary">
+                <h3>📊 测试结果汇总</h3>
+                <p id="summary-text">点击"一键测试所有URL"开始验证</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 测试数据
+        const testData = {
+            chat: {
+                message: "请帮我分析一下公司当前的资金状况",
+                context: "财务查询"
+            },
+            expense: {
+                applicant: "张三",
+                amount: 15000,
+                category: "设备采购",
+                description: "购买笔记本电脑",
+                department: "技术部"
+            }
+        };
+
+        // 更新URL
+        function updateUrls() {
+            const baseUrl = document.getElementById('n8n-base-url').value.trim();
+            if (!baseUrl) {
+                alert('请输入n8n实例URL');
+                return;
+            }
+            
+            // 更新显示的URL
+            document.getElementById('chat-url').textContent = `${baseUrl}/webhook/financial-chat-webhook`;
+            document.getElementById('expense-url').textContent = `${baseUrl}/webhook/expense-request-webhook`;
+            
+            alert('URL已更新，现在可以进行测试');
+        }
+
+        // 测试智能问答API
+        async function testChatApi() {
+            const baseUrl = document.getElementById('n8n-base-url').value.trim();
+            if (!baseUrl) {
+                alert('请先配置n8n实例URL');
+                return;
+            }
+            
+            const url = `${baseUrl}/webhook/financial-chat-webhook`;
+            await testUrl('chat', url, testData.chat, 'POST');
+        }
+
+        // 测试支出申请API
+        async function testExpenseApi() {
+            const baseUrl = document.getElementById('n8n-base-url').value.trim();
+            if (!baseUrl) {
+                alert('请先配置n8n实例URL');
+                return;
+            }
+            
+            const url = `${baseUrl}/webhook/expense-request-webhook`;
+            await testUrl('expense', url, testData.expense, 'POST');
+        }
+
+        // 测试报表生成
+        async function testReportGeneration() {
+            const resultDiv = document.getElementById('report-result');
+            const statusIndicator = document.getElementById('status-report');
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result loading';
+            resultDiv.textContent = '正在模拟报表生成测试...';
+            statusIndicator.className = 'status-indicator status-loading';
+            
+            // 模拟报表生成测试
+            setTimeout(() => {
+                const mockResult = {
+                    success: true,
+                    message: "财务报表生成模拟测试",
+                    data: {
+                        reportType: "daily",
+                        generatedAt: new Date().toISOString(),
+                        totalIncome: 120000,
+                        totalExpense: 45000,
+                        netCashFlow: 75000,
+                        status: "completed"
+                    }
+                };
+                
+                resultDiv.className = 'result success';
+                resultDiv.textContent = `✅ 报表生成模拟测试成功\n\n${JSON.stringify(mockResult, null, 2)}`;
+                statusIndicator.className = 'status-indicator status-success';
+                updateSummary();
+            }, 2000);
+        }
+
+        // 通用URL测试函数
+        async function testUrl(type, url, data, method = 'GET') {
+            const resultDiv = document.getElementById(`${type}-result`);
+            const statusIndicator = document.getElementById(`status-${type}`);
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result loading';
+            resultDiv.textContent = '正在测试连接...';
+            statusIndicator.className = 'status-indicator status-loading';
+            
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'cors'
+                };
+                
+                if (method === 'POST' && data) {
+                    options.body = JSON.stringify(data);
+                }
+                
+                const response = await fetch(url, options);
+                
+                let result;
+                const contentType = response.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    result = await response.json();
+                } else {
+                    result = await response.text();
+                }
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ 连接成功 (${response.status})\n\n响应内容:\n${typeof result === 'object' ? JSON.stringify(result, null, 2) : result}`;
+                    statusIndicator.className = 'status-indicator status-success';
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ 请求失败 (${response.status})\n\n错误信息:\n${typeof result === 'object' ? JSON.stringify(result, null, 2) : result}`;
+                    statusIndicator.className = 'status-indicator status-error';
+                }
+                
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ 连接失败\n\n错误详情:\n${error.message}\n\n可能原因:\n1. n8n实例未运行\n2. URL配置错误\n3. 网络连接问题\n4. CORS策略限制`;
+                statusIndicator.className = 'status-indicator status-error';
+            }
+            
+            updateSummary();
+        }
+
+        // 一键测试所有URL
+        async function testAllUrls() {
+            const baseUrl = document.getElementById('n8n-base-url').value.trim();
+            if (!baseUrl) {
+                alert('请先配置n8n实例URL');
+                return;
+            }
+            
+            // 依次测试所有API
+            await testChatApi();
+            await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒
+            
+            await testExpenseApi();
+            await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒
+            
+            await testReportGeneration();
+        }
+
+        // 更新测试结果汇总
+        function updateSummary() {
+            const indicators = document.querySelectorAll('.status-indicator');
+            let successCount = 0;
+            let errorCount = 0;
+            let totalCount = 0;
+            
+            indicators.forEach(indicator => {
+                if (indicator.classList.contains('status-success')) {
+                    successCount++;
+                    totalCount++;
+                } else if (indicator.classList.contains('status-error')) {
+                    errorCount++;
+                    totalCount++;
+                }
+            });
+            
+            const summaryText = document.getElementById('summary-text');
+            if (totalCount === 0) {
+                summaryText.textContent = '点击"一键测试所有URL"开始验证';
+            } else {
+                summaryText.innerHTML = `
+                    测试完成: ${totalCount}/3 个API<br>
+                    ✅ 成功: ${successCount} 个<br>
+                    ❌ 失败: ${errorCount} 个
+                `;
+            }
+        }
+
+        // 页面加载时的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 可以在这里添加初始化逻辑
+            console.log('n8n财务系统URL验证器已加载');
+        });
+    </script>
+</body>
+</html>
+
+
+
+

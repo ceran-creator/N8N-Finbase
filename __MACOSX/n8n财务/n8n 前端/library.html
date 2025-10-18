@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n智能财务管理系统 - Library</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="library-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo-container">
+                        <img src="设计图/Logo.png" alt="n8n智能财务管理系统" class="header-logo">
+                    </div>
+                    <button class="action-icon" title="AI模块选择">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button class="action-icon" title="分享">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        <button class="action-icon" title="更多问题">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                        <button class="action-icon new-chat-btn" title="新建对话">
+                            <i class="fas fa-plus"></i>
+                            <span class="new-chat-text">New Chat</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- 左侧导航栏 -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-content">
+                    <!-- Logo区域 -->
+                    <div class="logo-section">
+                        <div class="logo-icon">
+                            <img src="设计图/Logo-图标.png" alt="Logo" class="logo-image">
+                        </div>
+                        <span class="logo-text">n8n Finance</span>
+                    </div>
+
+                    <!-- 导航菜单 -->
+                    <nav class="nav-menu">
+                        <div class="nav-item" onclick="navigateToHome()">
+                            <div class="nav-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <span class="nav-text">Home</span>
+                        </div>
+                        
+                        <div class="nav-item active">
+                            <div class="nav-icon">
+                                <i class="fas fa-folder"></i>
+                            </div>
+                            <span class="nav-text">Library</span>
+                        </div>
+                        
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <span class="nav-text">History</span>
+                        </div>
+                        
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <span class="nav-text">Favorites</span>
+                        </div>
+                    </nav>
+                    
+                    <!-- 底部设置和用户 -->
+                    <div class="sidebar-bottom">
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <span class="nav-text">Settings</span>
+                        </div>
+                        
+                        <div class="nav-item">
+                            <div class="nav-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span class="nav-text">User</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 折叠按钮 -->
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </aside>
+
+            <!-- 主工作区 -->
+            <main class="main-content library-main">
+                <div class="library-container">
+                    <!-- Library标题区域 -->
+                    <div class="library-header">
+                        <div class="library-title-left">
+                            <div class="library-icon">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <h1 class="library-title">Library</h1>
+                        </div>
+                        <div class="library-title-right">
+                            <div class="title-actions-bar">
+                                <button class="title-btn upload-btn" title="Upload files" id="titleUploadBtn">
+                                    <i class="fas fa-upload"></i>
+                                    <span>Upload</span>
+                                </button>
+                                <button class="title-btn delete-btn" title="Delete selected files" id="titleDeleteBtn">
+                                    <i class="fas fa-trash"></i>
+                                    <span>Delete</span>
+                                </button>
+                            </div>
+                            <button class="search-icon-btn" title="Search files" id="searchBtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Files区域 -->
+                    <section class="recent-files-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Recent Files</h2>
+                            <span class="file-count">6 files</span>
+                        </div>
+                        
+                        <div class="scroll-container">
+                            <button class="scroll-btn scroll-left" id="recentScrollLeft">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="files-horizontal-scroll recent-files-horizontal" id="recentFilesScroll">
+                                <div class="file-card recent-file" data-file-id="1">
+                                    <div class="file-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="file-info">
+                                        <h3 class="file-name">Financial Statement Q1 2024.pdf</h3>
+                                        <p class="file-meta">Edited 2 hours ago • 2.3MB</p>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="file-action-btn" title="Preview">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="Download">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="More">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="file-card recent-file" data-file-id="2">
+                                    <div class="file-icon excel">
+                                        <i class="fas fa-file-excel"></i>
+                                    </div>
+                                    <div class="file-info">
+                                        <h3 class="file-name">Bank Transactions Mar 2024.xlsx</h3>
+                                        <p class="file-meta">Edited 4 hours ago • 1.8MB</p>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="file-action-btn" title="Preview">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="Download">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="More">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="file-card recent-file" data-file-id="3">
+                                    <div class="file-icon word">
+                                        <i class="fas fa-file-word"></i>
+                                    </div>
+                                    <div class="file-info">
+                                        <h3 class="file-name">Budget Request Report.docx</h3>
+                                        <p class="file-meta">Edited 1 day ago • 856KB</p>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="file-action-btn" title="Preview">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="Download">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="More">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="file-card recent-file" data-file-id="4">
+                                    <div class="file-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="file-info">
+                                        <h3 class="file-name">Tax Declaration Feb 2024.pdf</h3>
+                                        <p class="file-meta">Edited 2 days ago • 3.1MB</p>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="file-action-btn" title="Preview">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="Download">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="More">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="file-card recent-file" data-file-id="5">
+                                    <div class="file-icon excel">
+                                        <i class="fas fa-file-excel"></i>
+                                    </div>
+                                    <div class="file-info">
+                                        <h3 class="file-name">Budget Execution Mar 2024.xlsx</h3>
+                                        <p class="file-meta">Edited 3 days ago • 1.2MB</p>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="file-action-btn" title="Preview">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="Download">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="More">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="file-card recent-file" data-file-id="6">
+                                    <div class="file-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="file-info">
+                                        <h3 class="file-name">Annual Audit Report 2023.pdf</h3>
+                                        <p class="file-meta">Edited 1 week ago • 4.5MB</p>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="file-action-btn" title="Preview">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="Download">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="file-action-btn" title="More">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="scroll-btn scroll-right" id="recentScrollRight">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Public Files区域 -->
+                    <section class="public-files-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Public Files</h2>
+                            <div class="section-actions">
+                                <button class="filter-btn-small" title="Filter">
+                                    <i class="fas fa-filter"></i>
+                                    <span>Filter</span>
+                                </button>
+                                <span class="file-count">8 files</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Public Files模块外侧的滑动箭头 -->
+                        <div class="public-files-outer-arrows">
+                            <button class="outer-scroll-btn outer-scroll-left" id="publicOuterScrollLeft">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="outer-scroll-btn outer-scroll-right" id="publicOuterScrollRight">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="public-files-container">
+                            <div class="public-files-background">
+                                <div class="scroll-container">
+                                    <button class="scroll-btn scroll-left" id="publicScrollLeft">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <div class="files-horizontal-scroll public-files-horizontal" id="publicFilesScroll">
+                                        <div class="file-card public-file" data-file-id="5">
+                                            <div class="file-icon">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </div>
+                                            <div class="file-info">
+                                            <h3 class="file-name">Corporate Finance Policy.pdf</h3>
+                                            <p class="file-meta">Created 1 week ago • 4.2MB</p>
+                                            </div>
+                                            <div class="file-permission">
+                                                <span class="permission-badge admin">Admin</span>
+                                            </div>
+                                            <div class="file-actions">
+                                                <button class="file-action-btn" title="Preview">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="file-action-btn" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="file-card public-file" data-file-id="6">
+                                            <div class="file-icon excel">
+                                                <i class="fas fa-file-excel"></i>
+                                            </div>
+                                            <div class="file-info">
+                                            <h3 class="file-name">Budget Template 2024.xlsx</h3>
+                                            <p class="file-meta">Created 2 weeks ago • 1.2MB</p>
+                                            </div>
+                                            <div class="file-permission">
+                                                <span class="permission-badge editable">Editable</span>
+                                            </div>
+                                            <div class="file-actions">
+                                                <button class="file-action-btn" title="Preview">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="file-action-btn" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="file-card public-file" data-file-id="7">
+                                            <div class="file-icon word">
+                                                <i class="fas fa-file-word"></i>
+                                            </div>
+                                            <div class="file-info">
+                                            <h3 class="file-name">Approval Workflow Guide.docx</h3>
+                                            <p class="file-meta">Created 3 weeks ago • 2.1MB</p>
+                                            </div>
+                                            <div class="file-permission">
+                                                <span class="permission-badge view-only">View Only</span>
+                                            </div>
+                                            <div class="file-actions">
+                                                <button class="file-action-btn" title="Preview">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="file-action-btn" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="file-card public-file" data-file-id="8">
+                                            <div class="file-icon">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </div>
+                                            <div class="file-info">
+                                            <h3 class="file-name">Compliance Checklist.pdf</h3>
+                                            <p class="file-meta">Created 1 month ago • 3.8MB</p>
+                                            </div>
+                                            <div class="file-permission">
+                                                <span class="permission-badge editable">Editable</span>
+                                            </div>
+                                            <div class="file-actions">
+                                                <button class="file-action-btn" title="Preview">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="file-action-btn" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="file-card public-file" data-file-id="9">
+                                            <div class="file-icon excel">
+                                                <i class="fas fa-file-excel"></i>
+                                            </div>
+                                            <div class="file-info">
+                                            <h3 class="file-name">Financial Report Template.xlsx</h3>
+                                            <p class="file-meta">Created 1 month ago • 2.5MB</p>
+                                            </div>
+                                            <div class="file-permission">
+                                                <span class="permission-badge view-only">View Only</span>
+                                            </div>
+                                            <div class="file-actions">
+                                                <button class="file-action-btn" title="Preview">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="file-action-btn" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="file-card public-file" data-file-id="10">
+                                            <div class="file-icon">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </div>
+                                            <div class="file-info">
+                                            <h3 class="file-name">Audit Report 2023.pdf</h3>
+                                            <p class="file-meta">Created 2 months ago • 5.6MB</p>
+                                            </div>
+                                            <div class="file-permission">
+                                                <span class="permission-badge admin">Admin</span>
+                                            </div>
+                                            <div class="file-actions">
+                                                <button class="file-action-btn" title="Preview">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="file-action-btn" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="file-card public-file" data-file-id="11">
+                                            <div class="file-icon word">
+                                                <i class="fas fa-file-word"></i>
+                                            </div>
+                                            <div class="file-info">
+                                            <h3 class="file-name">Finance Policy Handbook.docx</h3>
+                                            <p class="file-meta">Created 2 months ago • 3.2MB</p>
+                                            </div>
+                                            <div class="file-permission">
+                                                <span class="permission-badge editable">Editable</span>
+                                            </div>
+                                            <div class="file-actions">
+                                                <button class="file-action-btn" title="Preview">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="file-action-btn" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="file-card public-file" data-file-id="12">
+                                            <div class="file-icon excel">
+                                                <i class="fas fa-file-excel"></i>
+                                            </div>
+                                            <div class="file-info">
+                                            <h3 class="file-name">Cost Analysis Template.xlsx</h3>
+                                            <p class="file-meta">Created 3 months ago • 1.8MB</p>
+                                            </div>
+                                            <div class="file-permission">
+                                                <span class="permission-badge view-only">View Only</span>
+                                            </div>
+                                            <div class="file-actions">
+                                                <button class="file-action-btn" title="Preview">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="file-action-btn" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="scroll-btn scroll-right" id="publicScrollRight">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="library-script.js"></script>
+    <script>
+        // 添加必要的全局导航函数
+        function navigateToHome() {
+            window.location.href = 'home.html';
+        }
+        
+        function navigateToLibrary() {
+            window.location.href = 'library.html';
+        }
+    </script>
+</body>
+</html>
+

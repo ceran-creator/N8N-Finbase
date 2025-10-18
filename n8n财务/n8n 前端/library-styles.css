@@ -1,0 +1,1175 @@
+/* Library页面专用样式 */
+
+/* Library主工作区 */
+.library-main {
+    padding: var(--spacing-6);
+    padding-top: calc(var(--spacing-6) - 20px);
+}
+
+.library-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    padding: var(--spacing-6);
+}
+
+/* Library工具栏 */
+.library-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-5) var(--spacing-6);
+    background: white;
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-200);
+    margin-bottom: var(--spacing-6);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.library-toolbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
+}
+
+.toolbar-left {
+    display: flex;
+    gap: var(--spacing-3);
+    align-items: center;
+}
+
+.toolbar-right {
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+}
+
+.toolbar-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-3) var(--spacing-5);
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-xl);
+    color: var(--gray-700);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.toolbar-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.toolbar-btn:hover::before {
+    left: 100%;
+}
+
+.toolbar-btn:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-300);
+    color: var(--primary-600);
+    transform: translateY(-1px);
+}
+
+.upload-btn {
+    background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
+    color: white;
+    border-color: var(--primary-600);
+    box-shadow: var(--shadow-sm);
+}
+
+.upload-btn:hover {
+    background: linear-gradient(135deg, var(--primary-600), var(--secondary-600));
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.delete-btn {
+    background: var(--error-50);
+    color: var(--error-600);
+    border-color: var(--error-300);
+}
+
+.delete-btn:hover {
+    background: var(--error-100);
+    border-color: var(--error-400);
+}
+
+/* 搜索容器 */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: var(--spacing-3);
+    color: var(--gray-400);
+    font-size: var(--font-size-sm);
+    z-index: 1;
+}
+
+.search-input {
+    padding: var(--spacing-2) var(--spacing-3) var(--spacing-2) calc(var(--spacing-3) + 20px);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-sm);
+    width: 280px;
+    background: var(--gray-50);
+    transition: all var(--transition-fast);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-400);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(107, 159, 255, 0.1);
+}
+
+/* Library标题区域 */
+.library-header {
+    margin-bottom: var(--spacing-6);
+}
+
+.library-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-6);
+}
+
+.library-title-left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+.library-title-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+/* 标题右侧操作按钮条 */
+.title-actions-bar {
+    display: flex;
+    gap: var(--spacing-3);
+    align-items: center;
+}
+
+.search-icon-btn {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: var(--gray-600);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-normal);
+    box-shadow: none;
+}
+
+.search-icon-btn:hover {
+    background: var(--primary-100);
+    color: var(--primary-600);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.title-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2) var(--spacing-4);
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-xl);
+    color: var(--gray-700);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    min-width: 80px;
+    justify-content: center;
+}
+
+.title-btn:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-300);
+    color: var(--primary-600);
+}
+
+.library-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: var(--font-size-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.library-title {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--gray-800);
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+/* 文件区域通用样式 */
+.recent-files-section,
+.public-files-section {
+    background: white;
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-6);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-200);
+    margin-top: -40px; /* 整体向上移动40个单位（原来-20，再增加-20） */
+}
+
+/* Public Files模块单独设置上边距，增加与Recent Files的间隔 */
+.public-files-section {
+    margin-top: var(--spacing-8); /* 增加与Recent Files模块的间隔 */
+}
+
+/* Public Files模块的滑动箭头特殊定位，确保与Recent Files对齐 */
+.public-files-section .scroll-left {
+    left: -50px; /* 与Recent Files模块的滑动箭头位置完全一致 */
+}
+
+.public-files-section .scroll-right {
+    right: -50px; /* 与Recent Files模块的滑动箭头位置完全一致 */
+}
+
+/* Public Files模块外侧的滑动箭头 */
+.public-files-outer-arrows {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: var(--spacing-4) 0;
+}
+
+.outer-scroll-btn {
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    color: var(--gray-600);
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-normal);
+    opacity: 0.7;
+}
+
+.outer-scroll-btn:hover {
+    color: var(--primary-600);
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.outer-scroll-left {
+    margin-left: -60px; /* 位置在模块外侧 */
+}
+
+.outer-scroll-right {
+    margin-right: -60px; /* 位置在模块外侧 */
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-6);
+    padding-bottom: var(--spacing-4);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.section-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--gray-800);
+    margin: 0;
+}
+
+.file-count {
+    font-size: var(--font-size-sm);
+    color: var(--gray-500);
+    background: var(--gray-100);
+    padding: var(--spacing-1) var(--spacing-3);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+}
+
+.section-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+.filter-btn-small {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2) var(--spacing-3);
+    background: var(--primary-50);
+    border: 1px solid var(--primary-200);
+    border-radius: var(--radius-md);
+    color: var(--primary-600);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filter-btn-small:hover {
+    background: var(--primary-100);
+    border-color: var(--primary-300);
+    transform: translateY(-1px);
+}
+
+/* 文件网格 */
+.files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-5);
+}
+
+/* 横向滚动布局 */
+.files-horizontal-scroll {
+    display: flex;
+    gap: var(--spacing-4);
+    overflow-x: auto;
+    padding: var(--spacing-2) 0;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.files-horizontal-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.recent-files-horizontal .file-card {
+    flex: 0 0 280px;
+    min-width: 280px;
+}
+
+.public-files-horizontal .file-card {
+    flex: 0 0 300px;
+    min-width: 300px;
+}
+
+/* 滚动容器 */
+.scroll-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+/* 滑动箭头按钮 */
+.scroll-btn {
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    color: var(--gray-600);
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-normal);
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.7;
+}
+
+.scroll-btn:hover {
+    color: var(--primary-600);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.2);
+}
+
+.scroll-btn:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+.scroll-left {
+    left: -50px; /* 与模块间隔10个单位 */
+}
+
+.scroll-right {
+    right: -50px; /* 与模块间隔10个单位 */
+}
+
+/* 横向滚动布局 */
+.files-horizontal-scroll {
+    display: flex;
+    gap: var(--spacing-4);
+    overflow-x: auto;
+    padding: var(--spacing-2) 0;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-300) var(--gray-100);
+    flex: 1;
+    margin: 0 var(--spacing-6);
+}
+
+.files-horizontal-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.files-horizontal-scroll::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 3px;
+}
+
+.files-horizontal-scroll::-webkit-scrollbar-thumb {
+    background: var(--primary-300);
+    border-radius: 3px;
+}
+
+.files-horizontal-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-400);
+}
+
+/* Recent Files横向布局 */
+.recent-files-horizontal .file-card {
+    flex: 0 0 350px;
+    min-width: 350px;
+    background: white;
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-xl);
+    transition: all var(--transition-normal);
+}
+
+.recent-files-horizontal .file-card:hover {
+    background: linear-gradient(135deg, var(--primary-50), white);
+    border-color: var(--primary-300);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+}
+
+.recent-files-horizontal .file-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.recent-files-horizontal .file-card:hover::before {
+    opacity: 1;
+}
+
+/* Public Files横向布局 */
+.public-files-horizontal .file-card {
+    flex: 0 0 350px;
+    min-width: 350px;
+}
+
+/* 文件卡片 */
+.file-card {
+    display: flex;
+    align-items: flex-start; /* 改为顶部对齐，适应多行文件名 */
+    gap: var(--spacing-4);
+    padding: var(--spacing-5);
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    min-height: 80px; /* 设置最小高度确保一致性 */
+    height: auto; /* 允许高度自适应 */
+}
+
+.file-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
+    transform: scaleX(0);
+    transition: transform var(--transition-normal);
+}
+
+.file-card:hover::before {
+    transform: scaleX(1);
+}
+
+.file-card:hover {
+    background: white;
+    border-color: var(--primary-300);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.file-card.selected {
+    background: var(--primary-50);
+    border-color: var(--primary-400);
+    box-shadow: var(--shadow-sm);
+}
+
+.file-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--error-100), var(--error-50));
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--error-600);
+    font-size: var(--font-size-xl);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    margin-top: 2px; /* 微调图标位置，使其在顶部对齐时更美观 */
+}
+
+.file-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent);
+    border-radius: var(--radius-xl);
+}
+
+.file-icon.excel {
+    background: linear-gradient(135deg, var(--success-100), var(--success-50));
+    color: var(--success-600);
+}
+
+.file-icon.word {
+    background: linear-gradient(135deg, var(--primary-100), var(--primary-50));
+    color: var(--primary-600);
+}
+
+.file-info {
+    flex: 1;
+    min-width: 0;
+    max-width: calc(100% - 120px); /* 为图标和操作按钮预留空间 */
+    padding-right: var(--spacing-2); /* 增加右边距 */
+}
+
+.file-name {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--gray-800);
+    margin: 0 0 var(--spacing-1) 0;
+    line-height: 1.4;
+    word-break: break-word;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 最多显示2行 */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+.file-meta {
+    font-size: var(--font-size-xs);
+    color: var(--gray-500);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-permission {
+    display: flex;
+    align-items: center;
+    margin-right: var(--spacing-2);
+}
+
+.permission-badge {
+    padding: var(--spacing-1) var(--spacing-2);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.permission-badge.admin {
+    background: linear-gradient(135deg, var(--error-100), var(--error-50));
+    color: var(--error-700);
+    border: 1px solid var(--error-200);
+}
+
+.permission-badge.editable {
+    background: linear-gradient(135deg, var(--success-100), var(--success-50));
+    color: var(--success-700);
+    border: 1px solid var(--success-200);
+}
+
+.permission-badge.view-only {
+    background: linear-gradient(135deg, var(--gray-100), var(--gray-50));
+    color: var(--gray-700);
+    border: 1px solid var(--gray-200);
+}
+
+.file-actions {
+    display: flex;
+    gap: var(--spacing-1);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.file-card:hover .file-actions {
+    opacity: 1;
+}
+
+.file-action-btn {
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-500);
+    font-size: var(--font-size-xs);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.file-action-btn:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-300);
+    color: var(--primary-600);
+}
+
+/* Public Files特殊背景 */
+.public-files-container {
+    position: relative;
+    margin-top: var(--spacing-6);
+}
+
+.public-files-background {
+    background: linear-gradient(135deg, 
+        rgba(107, 159, 255, 0.12) 0%, 
+        rgba(139, 130, 255, 0.12) 25%,
+        rgba(107, 159, 255, 0.18) 50%,
+        rgba(139, 130, 255, 0.12) 75%,
+        rgba(107, 159, 255, 0.12) 100%
+    );
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-8);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(107, 159, 255, 0.3);
+    backdrop-filter: blur(25px);
+    box-shadow: var(--shadow-lg);
+}
+
+.public-files-background::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(
+            circle at 15% 15%, 
+            rgba(107, 159, 255, 0.2) 0%, 
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 85%, 
+            rgba(139, 130, 255, 0.2) 0%, 
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 50% 50%, 
+            rgba(107, 159, 255, 0.1) 0%, 
+            transparent 50%
+        ),
+        radial-gradient(
+            circle at 30% 70%, 
+            rgba(139, 130, 255, 0.15) 0%, 
+            transparent 45%
+        );
+    animation: float 30s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.public-files-background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(45deg, transparent 25%, rgba(255, 255, 255, 0.15) 50%, transparent 75%),
+        linear-gradient(-45deg, transparent 25%, rgba(255, 255, 255, 0.08) 50%, transparent 75%),
+        linear-gradient(90deg, transparent 40%, rgba(107, 159, 255, 0.1) 50%, transparent 60%);
+    animation: shimmer 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.public-grid {
+    position: relative;
+    z-index: 1;
+}
+
+.public-file {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.public-file::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(135deg, var(--primary-400), var(--secondary-400));
+    opacity: 0.6;
+}
+
+.public-file:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    border-color: rgba(107, 159, 255, 0.3);
+}
+
+.public-file:hover::before {
+    opacity: 1;
+}
+
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .library-container {
+        padding: var(--spacing-4);
+    }
+    
+    .files-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: var(--spacing-3);
+    }
+    
+    .search-input {
+        width: 200px;
+    }
+    
+    .library-chat {
+        width: 500px;
+        height: 70px;
+    }
+    
+    /* 横向滚动响应式 */
+    .recent-files-horizontal .file-card {
+        flex: 0 0 300px;
+        min-width: 300px;
+    }
+    
+    .public-files-horizontal .file-card {
+        flex: 0 0 320px;
+        min-width: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .library-toolbar {
+        flex-direction: column;
+        gap: var(--spacing-4);
+        align-items: stretch;
+    }
+    
+    .toolbar-left,
+    .toolbar-right {
+        justify-content: center;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .files-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-3);
+    }
+    
+    .file-card {
+        padding: var(--spacing-3);
+    }
+    
+    .library-chat {
+        width: calc(100vw - 20px);
+        height: 70px;
+        bottom: 10px;
+        left: 10px;
+        transform: none;
+    }
+    
+    .library-chat:hover {
+        /* 使用默认hover效果 */
+    }
+    
+    /* 移动端横向滚动优化 */
+    .recent-files-horizontal .file-card {
+        flex: 0 0 280px;
+        min-width: 280px;
+    }
+    
+    .public-files-horizontal .file-card {
+        flex: 0 0 300px;
+        min-width: 300px;
+    }
+    
+    .file-permission {
+        margin-right: var(--spacing-1);
+    }
+    
+    .permission-badge {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .library-main {
+        padding: var(--spacing-4);
+    }
+    
+    .library-title {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .library-icon {
+        width: 40px;
+        height: 40px;
+        font-size: var(--font-size-lg);
+    }
+    
+    .file-card {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-2);
+    }
+    
+    .file-actions {
+        opacity: 1;
+        justify-content: center;
+    }
+    
+    /* 小屏幕横向滚动优化 */
+    .recent-files-horizontal .file-card {
+        flex: 0 0 250px;
+        min-width: 250px;
+    }
+    
+    .public-files-horizontal .file-card {
+        flex: 0 0 270px;
+        min-width: 270px;
+    }
+    
+    .file-permission {
+        margin-right: 0;
+        margin-bottom: var(--spacing-1);
+    }
+    
+    .permission-badge {
+        font-size: 9px;
+        padding: 1px 4px;
+    }
+}
+
+/* 文件选择状态 */
+.file-card input[type="checkbox"] {
+    position: absolute;
+    top: var(--spacing-2);
+    left: var(--spacing-2);
+    width: 16px;
+    height: 16px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-card.selected input[type="checkbox"] {
+    opacity: 1;
+}
+
+/* 加载动画 */
+.file-card.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.file-card.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--gray-300);
+    border-top: 2px solid var(--primary-500);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 空状态 */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-12) var(--spacing-6);
+    color: var(--gray-500);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-4);
+    color: var(--gray-300);
+}
+
+.empty-state h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-2);
+    color: var(--gray-600);
+}
+
+.empty-state p {
+    font-size: var(--font-size-sm);
+    margin: 0;
+}
+
+/* 拖拽上传区域 */
+.drag-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(107, 159, 255, 0.1);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-normal);
+}
+
+.drag-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* 拖拽悬停效果 */
+.library-container.drag-over {
+    background: linear-gradient(135deg, 
+        rgba(107, 159, 255, 0.05), 
+        rgba(139, 130, 255, 0.05)
+    );
+    border: 2px dashed var(--primary-400);
+    border-radius: var(--radius-2xl);
+}
+
+.library-container.drag-over::before {
+    content: '拖拽文件到此处上传';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--primary-600);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.drag-content {
+    background: white;
+    padding: var(--spacing-8);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-xl);
+    text-align: center;
+    border: 2px dashed var(--primary-400);
+}
+
+.drag-content i {
+    font-size: 4rem;
+    color: var(--primary-500);
+    margin-bottom: var(--spacing-4);
+}
+
+.drag-content h3 {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-2);
+}
+
+.drag-content p {
+    color: var(--gray-600);
+    margin: 0;
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Library页面动画 */
+.library-toolbar {
+    animation: slideInRight 0.8s ease-out;
+}
+
+.library-header {
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.recent-files-section {
+    animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.public-files-section {
+    animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+.file-card {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+.file-card:nth-child(1) { animation-delay: 0.1s; }
+.file-card:nth-child(2) { animation-delay: 0.2s; }
+.file-card:nth-child(3) { animation-delay: 0.3s; }
+.file-card:nth-child(4) { animation-delay: 0.4s; }
+.file-card:nth-child(5) { animation-delay: 0.5s; }
+.file-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* 微交互效果 */
+.toolbar-btn:active {
+    transform: scale(0.95);
+}
+
+.file-card:active {
+    transform: scale(0.98);
+}
+
+.file-action-btn:active {
+    transform: scale(0.9);
+}
+
+/* 选中状态动画 */
+.file-card.selected {
+    animation: pulse 0.6s ease-in-out;
+}
+

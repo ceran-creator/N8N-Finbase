@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n AI智能问答系统测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .config-section {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .config-section h3 {
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .url-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: monospace;
+        }
+        
+        .url-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .test-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .test-btn:hover {
+            background: #218838;
+        }
+        
+        .status {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .chat-area {
+            padding: 20px;
+            min-height: 400px;
+        }
+        
+        .messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+        
+        .message.user {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+        }
+        
+        .message.ai {
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .message.system {
+            background: #fff3cd;
+            color: #856404;
+            text-align: center;
+            max-width: 100%;
+            font-size: 14px;
+        }
+        
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .message-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .send-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .send-btn:hover {
+            background: #5568d3;
+        }
+        
+        .send-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .quick-tests {
+            margin-top: 15px;
+        }
+        
+        .quick-tests h4 {
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .quick-test-btn {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 5px 5px 5px 0;
+            cursor: pointer;
+            font-size: 12px;
+            color: #495057;
+        }
+        
+        .quick-test-btn:hover {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 n8n AI智能问答系统测试</h1>
+            <p>验证财务AI助手的URL连通性和响应内容</p>
+        </div>
+        
+        <div class="config-section">
+            <h3>📡 API配置</h3>
+            <div style="display: flex; align-items: center;">
+                <input type="text" id="apiUrl" class="url-input" 
+                       value="https://your-n8n-instance.app.n8n.cloud/webhook/financial-chat-webhook/chat"
+                       placeholder="输入您的n8n工作流Webhook URL">
+                <button class="test-btn" onclick="testConnection()">测试连接</button>
+            </div>
+            <div id="connectionStatus" class="status"></div>
+        </div>
+        
+        <div class="chat-area">
+            <div id="messages" class="messages">
+                <div class="message system">
+                    请先配置正确的API URL，然后点击"测试连接"验证系统可用性
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <input type="text" id="messageInput" class="message-input" 
+                       placeholder="输入财务相关问题..." disabled>
+                <button id="sendBtn" class="send-btn" onclick="sendMessage()" disabled>发送</button>
+            </div>
+            
+            <div class="quick-tests">
+                <h4>🚀 快速测试问题：</h4>
+                <button class="quick-test-btn" onclick="quickTest('公司的现金流情况如何？')">现金流查询</button>
+                <button class="quick-test-btn" onclick="quickTest('第三季度的营业收入是多少？')">营业收入查询</button>
+                <button class="quick-test-btn" onclick="quickTest('请分析公司的盈利能力')">盈利能力分析</button>
+                <button class="quick-test-btn" onclick="quickTest('ROE和资产周转率如何？')">财务指标查询</button>
+                <button class="quick-test-btn" onclick="quickTest('有什么风险需要关注？')">风险分析</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isConnected = false;
+        
+        // 测试连接
+        async function testConnection() {
+            const url = document.getElementById('apiUrl').value.trim();
+            const status = document.getElementById('connectionStatus');
+            
+            if (!url) {
+                showStatus('请输入API URL', 'error');
+                return;
+            }
+            
+            status.style.display = 'block';
+            status.className = 'status';
+            status.textContent = '正在测试连接...';
+            
+            try {
+                // 发送测试请求
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'sendMessage',
+                        chatInput: '测试连接'
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    showStatus('✅ 连接成功！AI系统正常运行', 'success');
+                    isConnected = true;
+                    enableChat();
+                    addMessage('system', '🎉 连接成功！您现在可以开始与AI财务助手对话了');
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                showStatus(`❌ 连接失败: ${error.message}`, 'error');
+                isConnected = false;
+                disableChat();
+                addMessage('system', `❌ 连接失败: ${error.message}`);
+            }
+        }
+        
+        // 显示状态
+        function showStatus(message, type) {
+            const status = document.getElementById('connectionStatus');
+            status.style.display = 'block';
+            status.className = `status ${type}`;
+            status.textContent = message;
+        }
+        
+        // 启用聊天功能
+        function enableChat() {
+            document.getElementById('messageInput').disabled = false;
+            document.getElementById('sendBtn').disabled = false;
+        }
+        
+        // 禁用聊天功能
+        function disableChat() {
+            document.getElementById('messageInput').disabled = true;
+            document.getElementById('sendBtn').disabled = true;
+        }
+        
+        // 发送消息
+        async function sendMessage() {
+            if (!isConnected) {
+                alert('请先测试连接');
+                return;
+            }
+            
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) {
+                alert('请输入消息');
+                return;
+            }
+            
+            // 显示用户消息
+            addMessage('user', message);
+            input.value = '';
+            
+            // 显示加载状态
+            const loadingId = addMessage('ai', '🤔 AI正在思考...');
+            
+            try {
+                const url = document.getElementById('apiUrl').value.trim();
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'sendMessage',
+                        chatInput: message
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                // 移除加载消息
+                removeMessage(loadingId);
+                
+                // 显示AI回复
+                const aiResponse = data.output || data.message || JSON.stringify(data, null, 2);
+                addMessage('ai', aiResponse);
+                
+            } catch (error) {
+                // 移除加载消息
+                removeMessage(loadingId);
+                addMessage('ai', `❌ 错误: ${error.message}`);
+            }
+        }
+        
+        // 快速测试
+        function quickTest(question) {
+            if (!isConnected) {
+                alert('请先测试连接');
+                return;
+            }
+            
+            document.getElementById('messageInput').value = question;
+            sendMessage();
+        }
+        
+        // 添加消息到聊天区域
+        function addMessage(type, content) {
+            const messages = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            const messageId = Date.now();
+            
+            messageDiv.className = `message ${type}`;
+            messageDiv.id = `message-${messageId}`;
+            messageDiv.textContent = content;
+            
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+            
+            return messageId;
+        }
+        
+        // 移除消息
+        function removeMessage(messageId) {
+            const messageElement = document.getElementById(`message-${messageId}`);
+            if (messageElement) {
+                messageElement.remove();
+            }
+        }
+        
+        // 回车发送消息
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // 页面加载完成后的提示
+        window.addEventListener('load', function() {
+            addMessage('system', '👋 欢迎使用n8n AI智能问答系统测试工具！请按照以下步骤操作：\n\n1️⃣ 在上方输入您的n8n工作流Webhook URL\n2️⃣ 点击"测试连接"验证系统可用性\n3️⃣ 连接成功后即可开始测试AI对话功能');
+        });
+    </script>
+</body>
+</html>
+
+
+
+

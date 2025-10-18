@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支出申请审批流程 - URL验证测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .url-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid #007bff;
+        }
+        
+        .url-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .url-info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .url-label {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        
+        .url-value {
+            font-family: 'Courier New', monospace;
+            background: #f1f3f4;
+            padding: 8px 12px;
+            border-radius: 5px;
+            word-break: break-all;
+            color: #d63384;
+            font-size: 0.9em;
+        }
+        
+        .test-form {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-right: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-test {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .results {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            min-height: 200px;
+        }
+        
+        .results h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .result-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status.testing {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .response-data {
+            background: #f1f3f4;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 支出申请审批流程 URL验证</h1>
+            <p>n8n财务管理系统 - 通信接口测试工具</p>
+        </div>
+        
+        <div class="content">
+            <!-- URL信息展示 -->
+            <div class="url-section">
+                <h3>📡 检测到的通信URL</h3>
+                
+                <div class="url-info">
+                    <div class="url-label">支出申请Webhook URL:</div>
+                    <div class="url-value" id="webhookUrl">待检测...</div>
+                </div>
+                
+                <div class="url-info">
+                    <div class="url-label">PDF转换服务URL:</div>
+                    <div class="url-value">https://api.pdfshift.io/v3/convert/pdf</div>
+                </div>
+                
+                <div class="url-info">
+                    <div class="url-label">Google Drive存储URL:</div>
+                    <div class="url-value">https://drive.google.com/drive/folders/1CKeDGkXV-WvSeucqdurxm31JIhhcQrRI</div>
+                </div>
+            </div>
+            
+            <!-- 测试表单 -->
+            <div class="test-form">
+                <h3>🧪 支出申请测试</h3>
+                <p style="margin-bottom: 20px; color: #6c757d;">填写支出申请信息，测试审批流程URL的响应</p>
+                
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="applicant">申请人姓名</label>
+                        <input type="text" id="applicant" value="张三" placeholder="请输入申请人姓名">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amount">申请金额 (元)</label>
+                        <input type="number" id="amount" value="3000" placeholder="请输入申请金额">
+                    </div>
+                </div>
+                
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="category">支出类别</label>
+                        <select id="category">
+                            <option value="办公用品">办公用品</option>
+                            <option value="设备采购">设备采购</option>
+                            <option value="差旅费">差旅费</option>
+                            <option value="营销费用">营销费用</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="department">所属部门</label>
+                        <select id="department">
+                            <option value="行政部">行政部</option>
+                            <option value="技术部">技术部</option>
+                            <option value="销售部">销售部</option>
+                            <option value="财务部">财务部</option>
+                            <option value="生产部">生产部</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">支出描述</label>
+                    <textarea id="description" rows="3" placeholder="请详细描述支出用途">采购办公文具用品</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="testUrl">测试URL (可修改)</label>
+                    <input type="url" id="testUrl" placeholder="请输入要测试的webhook URL">
+                </div>
+                
+                <button class="btn btn-test" onclick="testExpenseRequest()">🚀 发送测试请求</button>
+                <button class="btn" onclick="detectN8nUrl()">🔍 自动检测n8n URL</button>
+                <button class="btn" onclick="clearResults()">🗑️ 清空结果</button>
+            </div>
+            
+            <!-- 测试结果 -->
+            <div class="results" id="results">
+                <h3>📊 测试结果</h3>
+                <p style="color: #6c757d;">测试结果将显示在这里...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 常见的n8n实例URL模式
+        const commonN8nUrls = [
+            'http://localhost:5678/webhook/expense-request-webhook',
+            'https://n8n.yourdomain.com/webhook/expense-request-webhook',
+            'https://your-n8n-instance.herokuapp.com/webhook/expense-request-webhook'
+        ];
+        
+        // 自动检测n8n URL
+        function detectN8nUrl() {
+            addResult('🔍 开始检测n8n实例URL...', 'testing');
+            
+            // 尝试检测本地n8n实例
+            const testUrls = [
+                'http://localhost:5678/webhook/expense-request-webhook',
+                'http://127.0.0.1:5678/webhook/expense-request-webhook'
+            ];
+            
+            let detectedUrl = null;
+            
+            testUrls.forEach((url, index) => {
+                setTimeout(() => {
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({test: true}),
+                        mode: 'no-cors' // 避免CORS问题
+                    })
+                    .then(() => {
+                        detectedUrl = url;
+                        document.getElementById('webhookUrl').textContent = url;
+                        document.getElementById('testUrl').value = url;
+                        addResult(`✅ 检测到n8n实例: ${url}`, 'success');
+                    })
+                    .catch(() => {
+                        addResult(`❌ URL不可用: ${url}`, 'error');
+                        if (index === testUrls.length - 1 && !detectedUrl) {
+                            addResult('⚠️ 未检测到本地n8n实例，请手动输入URL', 'error');
+                            document.getElementById('testUrl').value = testUrls[0];
+                        }
+                    });
+                }, index * 1000);
+            });
+        }
+        
+        // 测试支出申请
+        async function testExpenseRequest() {
+            const testUrl = document.getElementById('testUrl').value;
+            
+            if (!testUrl) {
+                addResult('❌ 请先输入测试URL', 'error');
+                return;
+            }
+            
+            const requestData = {
+                applicant: document.getElementById('applicant').value,
+                amount: parseInt(document.getElementById('amount').value),
+                category: document.getElementById('category').value,
+                department: document.getElementById('department').value,
+                description: document.getElementById('description').value,
+                requestDate: new Date().toISOString().split('T')[0]
+            };
+            
+            addResult(`🚀 发送测试请求到: ${testUrl}`, 'testing');
+            addResult(`📤 请求数据: ${JSON.stringify(requestData, null, 2)}`, 'testing');
+            
+            try {
+                const response = await fetch(testUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                if (response.ok) {
+                    const responseData = await response.text();
+                    addResult('✅ 请求成功!', 'success');
+                    addResult(`📥 响应状态: ${response.status} ${response.statusText}`, 'success');
+                    
+                    try {
+                        const jsonData = JSON.parse(responseData);
+                        addResult('📋 响应数据 (JSON):', 'success');
+                        addResultWithData(JSON.stringify(jsonData, null, 2));
+                        
+                        // 验证响应数据结构
+                        validateResponseData(jsonData);
+                    } catch (e) {
+                        addResult('📋 响应数据 (文本):', 'success');
+                        addResultWithData(responseData);
+                    }
+                } else {
+                    addResult(`❌ 请求失败: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ 网络错误: ${error.message}`, 'error');
+                addResult('💡 提示: 请确保n8n实例正在运行，且URL正确', 'error');
+            }
+        }
+        
+        // 验证响应数据结构
+        function validateResponseData(data) {
+            const requiredFields = ['success', 'data'];
+            const dataFields = ['requestId', 'applicant', 'amount', 'finalStatus'];
+            
+            let isValid = true;
+            let validationResults = [];
+            
+            // 检查顶级字段
+            requiredFields.forEach(field => {
+                if (data.hasOwnProperty(field)) {
+                    validationResults.push(`✅ ${field}: 存在`);
+                } else {
+                    validationResults.push(`❌ ${field}: 缺失`);
+                    isValid = false;
+                }
+            });
+            
+            // 检查data字段
+            if (data.data) {
+                dataFields.forEach(field => {
+                    if (data.data.hasOwnProperty(field)) {
+                        validationResults.push(`✅ data.${field}: 存在`);
+                    } else {
+                        validationResults.push(`❌ data.${field}: 缺失`);
+                        isValid = false;
+                    }
+                });
+            }
+            
+            addResult('🔍 数据结构验证:', isValid ? 'success' : 'error');
+            validationResults.forEach(result => {
+                addResult(result, result.includes('✅') ? 'success' : 'error');
+            });
+            
+            if (isValid) {
+                addResult('🎉 响应数据结构符合预期标准!', 'success');
+            } else {
+                addResult('⚠️ 响应数据结构不完整，请检查n8n工作流配置', 'error');
+            }
+        }
+        
+        // 添加测试结果
+        function addResult(message, type = 'success') {
+            const results = document.getElementById('results');
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-item';
+            
+            const status = document.createElement('span');
+            status.className = `status ${type}`;
+            status.textContent = type === 'success' ? '成功' : type === 'error' ? '错误' : '测试中';
+            
+            const content = document.createElement('div');
+            content.textContent = message;
+            
+            const timestamp = document.createElement('small');
+            timestamp.style.color = '#6c757d';
+            timestamp.textContent = new Date().toLocaleTimeString();
+            
+            resultItem.appendChild(status);
+            resultItem.appendChild(content);
+            resultItem.appendChild(timestamp);
+            
+            results.appendChild(resultItem);
+            results.scrollTop = results.scrollHeight;
+        }
+        
+        // 添加带数据的结果
+        function addResultWithData(data) {
+            const results = document.getElementById('results');
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-item';
+            
+            const dataDiv = document.createElement('div');
+            dataDiv.className = 'response-data';
+            dataDiv.textContent = data;
+            
+            resultItem.appendChild(dataDiv);
+            results.appendChild(resultItem);
+            results.scrollTop = results.scrollHeight;
+        }
+        
+        // 清空结果
+        function clearResults() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h3>📊 测试结果</h3><p style="color: #6c757d;">测试结果将显示在这里...</p>';
+        }
+        
+        // 页面加载时自动检测
+        window.onload = function() {
+            addResult('🌟 支出申请审批流程URL验证工具已就绪', 'success');
+            addResult('💡 点击"自动检测n8n URL"开始检测本地n8n实例', 'testing');
+            
+            // 设置默认的webhook URL
+            document.getElementById('webhookUrl').textContent = 'http://localhost:5678/webhook/expense-request-webhook';
+            document.getElementById('testUrl').value = 'http://localhost:5678/webhook/expense-request-webhook';
+        };
+    </script>
+</body>
+</html>
+
+
+
+

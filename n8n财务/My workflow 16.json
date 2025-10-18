@@ -1,0 +1,949 @@
+{
+  "name": "My workflow 16",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 🎯 智能财务管理系统配置指南\n\n**系统功能：**\n- 📁 文档电子化管理\n- 💰 资金流转自动化\n- 📊 智能报表生成\n- ⚖️ 合规性监控\n\n**配置说明：**\n1. 修改Pinecone namespace为 ns-03\n2. 配置Google Drive文件夹\n3. 设置Claude系统提示词\n4. 测试数据已内置，可直接运行",
+        "height": 400,
+        "width": 360
+      },
+      "id": "26e9b282-3aed-4281-8069-e8333fdf3f5d",
+      "name": "配置指南",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -640,
+        -256
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1oue1fQG0gchaMm7t60y7a37P5rbW8Ue5",
+          "mode": "list",
+          "cachedResultName": "database03",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1oue1fQG0gchaMm7t60y7a37P5rbW8Ue5"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "83839a0e-a92d-414c-b536-ccba33b8d453",
+      "name": "Google Drive 文档监控",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "position": [
+        -240,
+        -256
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "vbdaWrMUy7QV10oi",
+          "name": "drive-workshop"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $json.id }}"
+        },
+        "options": {}
+      },
+      "id": "f43332e2-b60b-4c84-87e7-396c74aede54",
+      "name": "下载文档",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        160,
+        -256
+      ],
+      "typeVersion": 3,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "vbdaWrMUy7QV10oi",
+          "name": "drive-workshop"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "id": "95900d56-a16d-45bd-ae22-65e1d0d04bb6",
+      "name": "文档加载器",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        608,
+        -48
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "cebecf0c-5f1d-4af4-93e0-c3b20600abec",
+      "name": "文本分割器",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        608,
+        112
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4dc9206f-b263-47c8-af99-4e0d2ffe5cf8",
+      "name": "OpenAI 嵌入模型",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        480,
+        -48
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "i9YtN4AdSgS8mWcx",
+          "name": "openai-workshop"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "workshop20250708",
+          "mode": "list",
+          "cachedResultName": "workshop20250708"
+        },
+        "options": {
+          "pineconeNamespace": "ns-03"
+        }
+      },
+      "id": "00de9e33-d2bb-4fe5-82e9-7e656c6b0c42",
+      "name": "存储向量到Pinecone",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "position": [
+        480,
+        -256
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "pineconeApi": {
+          "id": "0BH74Kjg8OdmzZqM",
+          "name": "pinecone-workshop"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "id": "e8794468-127f-4719-b7e8-e50f0a9e4435",
+      "name": "智能问答触发器",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "position": [
+        -240,
+        352
+      ],
+      "webhookId": "financial-chat-webhook",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3923cb7b-5517-4ec8-818b-f4f0f50f1861",
+      "name": "OpenAI 嵌入模型（查询）",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        336,
+        704
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "i9YtN4AdSgS8mWcx",
+          "name": "openai-workshop"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "financial_knowledge_base",
+        "toolDescription": "检索财务文档和知识库，用于回答财务相关问题",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "workshop20250708",
+          "mode": "list",
+          "cachedResultName": "workshop20250708"
+        },
+        "options": {
+          "pineconeNamespace": "ns-03"
+        }
+      },
+      "id": "f75b9fd5-af13-4d7d-9c4f-e5bfe274b7b8",
+      "name": "从Pinecone检索向量",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "position": [
+        336,
+        544
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "pineconeApi": {
+          "id": "0BH74Kjg8OdmzZqM",
+          "name": "pinecone-workshop"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-3-5-sonnet-20241022",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 3.5 (New)"
+        },
+        "options": {}
+      },
+      "id": "b83082f1-89ff-4bf2-bcc4-4502e0707d92",
+      "name": "Claude 财务专家",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "position": [
+        128,
+        528
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "anthropicApi": {
+          "id": "2yygkXpqmsCmEtAB",
+          "name": "claude-workshop"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "你是集团总部资深财务管理\n即便拆解财务方案、解读经营数据，也要用你特有的专业范式：\n-表述需精准嵌入财务核心术语（如 ROE、现金流折现、边际成本、资产周转率等），既彰显数据逻辑的严谨性，又以贴合业务场景的解读传递务实温度\n-习惯结合各业务单元的现金流净额、资产负债率、盈亏平衡点及杜邦分析核心指标辩证分析，常用 “需动态追踪数据异动”“应按季度弹性优化资金配置”“要分层管控成本费用率” 这些表述\n即使说明财务策略的收益（如资金使用效率提升、融资成本降低、税优红利落地等），也会同步提及行业周期波动引发的营收波动风险、汇率变动导致的汇兑损失风险、政策调整带来的税务合规风险等潜在问题istant"
+        }
+      },
+      "id": "00f96848-d226-4b05-90d9-aeba07503220",
+      "name": "AI 财务助手",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        128,
+        352
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "expense-request-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "61570255-db6c-4c68-94f5-18aef9f91cf8",
+      "name": "支出申请Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [
+        -240,
+        1552
+      ],
+      "webhookId": "expense-request-webhook",
+      "typeVersion": 2,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "// 支出申请处理逻辑\nconst request = $input.first().json;\n\n// 测试数据：模拟支出申请\nconst testExpenseRequests = [\n  {\n    applicant: \"张三\",\n    amount: 3000,\n    category: \"办公用品\",\n    description: \"采购办公文具\",\n    department: \"行政部\",\n    requestDate: new Date().toISOString().split('T')[0]\n  },\n  {\n    applicant: \"李四\",\n    amount: 15000,\n    category: \"设备采购\",\n    description: \"购买笔记本电脑\",\n    department: \"技术部\",\n    requestDate: new Date().toISOString().split('T')[0]\n  },\n  {\n    applicant: \"王五\",\n    amount: 80000,\n    category: \"设备采购\",\n    description: \"采购服务器设备\",\n    department: \"技术部\",\n    requestDate: new Date().toISOString().split('T')[0]\n  },\n  {\n    applicant: \"赵六\",\n    amount: 5000,\n    category: \"差旅费\",\n    description: \"商务出差费用\",\n    department: \"销售部\",\n    requestDate: new Date().toISOString().split('T')[0]\n  },\n  {\n    applicant: \"钱七\",\n    amount: 120000,\n    category: \"设备采购\",\n    description: \"采购生产设备\",\n    department: \"生产部\",\n    requestDate: new Date().toISOString().split('T')[0]\n  }\n];\n\n// 使用传入的请求数据或测试数据\nconst expenseRequest = request.applicant ? request : testExpenseRequests[0];\n\n// 金额判断逻辑\nconst amount = expenseRequest.amount;\nconst threshold = 50000;\nconst isLargeAmount = amount >= threshold;\nconst requiresContract = amount >= threshold;\nconst approvalLevel = amount >= threshold ? 'high' : 'normal';\n\n// 审批流程配置\nlet approvalFlow = [];\nif (isLargeAmount) {\n  approvalFlow = [\n    { level: 1, approver: \"部门负责人\", status: \"pending\" },\n    { level: 2, approver: \"财务审核\", status: \"pending\" },\n    { level: 3, approver: \"创始人终审\", status: \"pending\" }\n  ];\n} else {\n  approvalFlow = [\n    { level: 1, approver: \"部门负责人\", status: \"pending\" },\n    { level: 2, approver: \"财务审核\", status: \"pending\" }\n  ];\n}\n\n// 合同检查要求\nconst contractCheck = {\n  required: requiresContract,\n  status: requiresContract ? \"pending\" : \"not_required\",\n  contractAmount: requiresContract ? amount : null,\n  contractType: requiresContract ? \"采购合同\" : null\n};\n\nreturn [{\n  json: {\n    requestId: `REQ_${Date.now()}`,\n    applicant: expenseRequest.applicant,\n    amount: expenseRequest.amount,\n    category: expenseRequest.category,\n    description: expenseRequest.description,\n    department: expenseRequest.department,\n    requestDate: expenseRequest.requestDate,\n    isLargeAmount,\n    requiresContract,\n    approvalLevel,\n    approvalFlow,\n    contractCheck,\n    status: \"submitted\",\n    createdAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "8a86faf4-e58b-4f96-94fc-3b730f915ef8",
+      "name": "处理支出申请",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        160,
+        1552
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $json.isLargeAmount }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            },
+            {
+              "id": "28a91d73-d5ac-4a12-8ae7-95173c9af208",
+              "leftValue": "={{ $json.amount }}",
+              "rightValue": 50000,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9ceb7b39-26a1-44be-8608-f85829d9559e",
+      "name": "金额判断",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        560,
+        1552
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// 小额支出审批流程\nconst request = $input.first().json;\n\n// 模拟审批流程\nconst approvalSteps = [\n  {\n    step: 1,\n    approver: \"部门负责人\",\n    status: \"approved\",\n    comment: \"同意申请\",\n    approvedAt: new Date().toISOString()\n  },\n  {\n    step: 2,\n    approver: \"财务审核\",\n    status: \"approved\",\n    comment: \"财务审核通过\",\n    approvedAt: new Date().toISOString()\n  }\n];\n\nreturn [{\n  json: {\n    ...request,\n    approvalSteps,\n    finalStatus: \"approved\",\n    approvedAt: new Date().toISOString(),\n    approvalType: \"normal\"\n  }\n}];"
+      },
+      "id": "356dcb44-3c7e-475d-95ef-95f0175f0cc3",
+      "name": "小额审批流程",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        960,
+        1344
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// 大额支出审批流程\nconst request = $input.first().json;\n\n// 模拟大额审批流程\nconst approvalSteps = [\n  {\n    step: 1,\n    approver: \"部门负责人\",\n    status: \"approved\",\n    comment: \"同意申请，已提交财务审核\",\n    approvedAt: new Date().toISOString()\n  },\n  {\n    step: 2,\n    approver: \"财务审核\",\n    status: \"approved\",\n    comment: \"财务审核通过，已提交创始人终审\",\n    approvedAt: new Date().toISOString()\n  },\n  {\n    step: 3,\n    approver: \"创始人终审\",\n    status: \"approved\",\n    comment: \"终审通过，可以执行采购\",\n    approvedAt: new Date().toISOString()\n  }\n];\n\nreturn [{\n  json: {\n    ...request,\n    approvalSteps,\n    finalStatus: \"approved\",\n    approvedAt: new Date().toISOString(),\n    approvalType: \"high\"\n  }\n}];"
+      },
+      "id": "56a392a2-bdaf-4026-acc9-c9ea86f79ffd",
+      "name": "大额审批流程",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        960,
+        1744
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// 合同检查逻辑\nconst request = $input.first().json;\n\n// 模拟合同检查\nconst contractCheck = {\n  required: request.contractCheck.required,\n  status: request.contractCheck.required ? \"verified\" : \"not_required\",\n  contractAmount: request.amount,\n  contractType: \"采购合同\",\n  contractNumber: request.contractCheck.required ? `CONTRACT_${Date.now()}` : null,\n  verifiedAt: request.contractCheck.required ? new Date().toISOString() : null,\n  verifiedBy: request.contractCheck.required ? \"法务部门\" : null\n};\n\nreturn [{\n  json: {\n    ...request,\n    contractCheck,\n    contractVerified: request.contractCheck.required ? true : true\n  }\n}];"
+      },
+      "id": "83a767ec-c148-442b-ba91-ce47e165372e",
+      "name": "合同检查",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1360,
+        1552
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// 审批完成通知\nconst request = $input.first().json;\n\nconst notification = {\n  to: \"founder@company.com\",\n  subject: `支出申请审批完成 - ${request.applicant}`,\n  content: `\n    申请人: ${request.applicant}\n    金额: ¥${request.amount.toLocaleString()}\n    类别: ${request.category}\n    描述: ${request.description}\n    审批状态: ${request.finalStatus}\n    审批类型: ${request.approvalType}\n    合同检查: ${request.contractVerified ? '已通过' : '未通过'}\n    完成时间: ${request.approvedAt}\n  `,\n  priority: request.approvalType === 'high' ? 'high' : 'normal'\n};\n\nreturn [{\n  json: {\n    ...request,\n    notification,\n    completedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "bc33ce55-fae6-4099-b4f2-9ac114cc3ad6",
+      "name": "审批完成通知",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1760,
+        1552
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// 归档审批记录到Pinecone\nconst approvalData = $input.first().json;\n\n// 构建审批记录文档\nconst approvalDocument = {\n  id: approvalData.requestId,\n  type: 'approval_record',\n  applicant: approvalData.applicant,\n  amount: approvalData.amount,\n  category: approvalData.category,\n  description: approvalData.description,\n  department: approvalData.department,\n  approvalLevel: approvalData.approvalLevel,\n  approvalSteps: approvalData.approvalSteps,\n  finalStatus: approvalData.finalStatus,\n  contractCheck: approvalData.contractCheck,\n  createdAt: approvalData.createdAt,\n  completedAt: approvalData.completedAt,\n  content: `\n    审批记录ID: ${approvalData.requestId}\n    申请人: ${approvalData.applicant}\n    申请金额: ¥${approvalData.amount.toLocaleString()}\n    申请类别: ${approvalData.category}\n    申请描述: ${approvalData.description}\n    所属部门: ${approvalData.department}\n    审批级别: ${approvalData.approvalLevel}\n    审批状态: ${approvalData.finalStatus}\n    合同检查: ${approvalData.contractCheck.required ? '需要' : '不需要'}\n    创建时间: ${approvalData.createdAt}\n    完成时间: ${approvalData.completedAt}\n  `\n};\n\nreturn [{\n  json: approvalDocument,\n  binary: {}\n}];"
+      },
+      "id": "c53aba78-b7ac-4066-a63a-ebee64a21833",
+      "name": "归档审批记录",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        2160,
+        1552
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "workshop20250708",
+          "mode": "list",
+          "cachedResultName": "workshop20250708"
+        },
+        "options": {
+          "pineconeNamespace": "ns-03"
+        }
+      },
+      "id": "fa32a665-11e6-446c-9506-c93d34342823",
+      "name": "存储审批向量",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "position": [
+        2560,
+        1552
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "pineconeApi": {
+          "id": "0BH74Kjg8OdmzZqM",
+          "name": "pinecone-workshop"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2560,
+        1728
+      ],
+      "id": "f46950e8-5a10-48f8-86be-d31322961499",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "i9YtN4AdSgS8mWcx",
+          "name": "openai-workshop"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "id": "1653c407-9e83-450c-846e-302ee6a4ac60",
+      "name": "文档加载器1",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        2672,
+        1728
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "9e1817a4-f7e6-48db-a2af-95f0090653f2",
+      "name": "文本分割器1",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        2672,
+        1904
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyMonth",
+              "hour": 9
+            },
+            {
+              "hour": 9
+            }
+          ]
+        }
+      },
+      "id": "cf568481-7af5-4b60-a3fc-1ad8cb4c7d15",
+      "name": "日报表定时触发器",
+      "type": "n8n-nodes-base.cron",
+      "position": [
+        -240,
+        1024
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate test financial data\nconst testFinancialData = [\n  {\n    date: '2024-01-15',\n    type: 'income',\n    amount: 50000,\n    category: 'Sales Revenue',\n    description: 'Product sales revenue',\n    source: 'Bank statement'\n  },\n  {\n    date: '2024-01-15',\n    type: 'expense',\n    amount: 15000,\n    category: 'Office Expenses',\n    description: 'Office supplies purchase',\n    source: 'Invoice'\n  },\n  {\n    date: '2024-01-15',\n    type: 'expense',\n    amount: 8000,\n    category: 'Personnel Cost',\n    description: 'Employee salaries',\n    source: 'Payroll'\n  },\n  {\n    date: '2024-01-15',\n    type: 'income',\n    amount: 30000,\n    category: 'Service Revenue',\n    description: 'Technical service fee',\n    source: 'Contract'\n  },\n  {\n    date: '2024-01-15',\n    type: 'expense',\n    amount: 5000,\n    category: 'Marketing Expenses',\n    description: 'Advertising placement',\n    source: 'Invoice'\n  },\n  {\n    date: '2024-01-15',\n    type: 'expense',\n    amount: 12000,\n    category: 'Equipment Purchase',\n    description: 'Server equipment',\n    source: 'Purchase contract'\n  },\n  {\n    date: '2024-01-15',\n    type: 'income',\n    amount: 25000,\n    category: 'Other Income',\n    description: 'Investment returns',\n    source: 'Bank statement'\n  },\n  {\n    date: '2024-01-15',\n    type: 'expense',\n    amount: 3000,\n    category: 'Travel Expenses',\n    description: 'Business travel',\n    source: 'Reimbursement'\n  },\n  {\n    date: '2024-01-15',\n    type: 'expense',\n    amount: 2000,\n    category: 'Tax',\n    description: 'VAT',\n    source: 'Tax filing'\n  },\n  {\n    date: '2024-01-15',\n    type: 'income',\n    amount: 15000,\n    category: 'Sales Revenue',\n    description: 'Software license fee',\n    source: 'Contract'\n  }\n];\n\n// 计算财务汇总\nconst totalIncome = testFinancialData\n  .filter(item => item.type === 'income')\n  .reduce((sum, item) => sum + item.amount, 0);\n\nconst totalExpense = testFinancialData\n  .filter(item => item.type === 'expense')\n  .reduce((sum, item) => sum + item.amount, 0);\n\nconst netCashFlow = totalIncome - totalExpense;\n\n// 按类别汇总\nconst categorySummary = {};\ntestFinancialData.forEach(item => {\n  if (!categorySummary[item.category]) {\n    categorySummary[item.category] = { income: 0, expense: 0 };\n  }\n  if (item.type === 'income') {\n    categorySummary[item.category].income += item.amount;\n  } else {\n    categorySummary[item.category].expense += item.amount;\n  }\n});\n\nreturn [{\n  json: {\n    date: new Date().toISOString().split('T')[0],\n    totalIncome,\n    totalExpense,\n    netCashFlow,\n    categorySummary,\n    transactions: testFinancialData,\n    reportType: 'daily'\n  }\n}];"
+      },
+      "id": "a4c772cc-87af-4083-89ca-7e2db8bbc3fe",
+      "name": "生成财务数据",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        160,
+        1024
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate financial report HTML content\nconst data = $input.first().json;\n\nconst htmlContent = `\n<!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Financial Daily Report</title>\n    <style>\n        body { font-family: Arial, sans-serif; margin: 20px; }\n        .header { text-align: center; margin-bottom: 30px; }\n        .summary { background: #f5f5f5; padding: 20px; border-radius: 5px; margin-bottom: 20px; }\n        .summary-item { display: flex; justify-content: space-between; margin: 10px 0; }\n        .positive { color: #28a745; }\n        .negative { color: #dc3545; }\n        table { width: 100%; border-collapse: collapse; margin-top: 20px; }\n        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }\n        th { background-color: #f2f2f2; }\n        .category-section { margin-top: 30px; }\n    </style>\n</head>\n<body>\n    <div class=\"header\">\n        <h1>Financial Daily Report</h1>\n        <p>Date: ${data.date}</p>\n    </div>\n    \n    <div class=\"summary\">\n        <h2>Financial Overview</h2>\n        <div class=\"summary-item\">\n            <span>Total Income:</span>\n            <span class=\"positive\">$${data.totalIncome.toLocaleString()}</span>\n        </div>\n        <div class=\"summary-item\">\n            <span>Total Expenses:</span>\n            <span class=\"negative\">$${data.totalExpense.toLocaleString()}</span>\n        </div>\n        <div class=\"summary-item\">\n            <span>Net Cash Flow:</span>\n            <span class=\"${data.netCashFlow >= 0 ? 'positive' : 'negative'}\">$${data.netCashFlow.toLocaleString()}</span>\n        </div>\n    </div>\n    \n    <div class=\"category-section\">\n        <h2>Category Summary</h2>\n        <table>\n            <tr><th>Category</th><th>Income</th><th>Expense</th><th>Net Amount</th></tr>\n            ${Object.entries(data.categorySummary).map(([category, amounts]) => \n                `<tr>\n                    <td>${category}</td>\n                    <td class=\"positive\">$${amounts.income.toLocaleString()}</td>\n                    <td class=\"negative\">$${amounts.expense.toLocaleString()}</td>\n                    <td class=\"${amounts.income - amounts.expense >= 0 ? 'positive' : 'negative'}\">$${(amounts.income - amounts.expense).toLocaleString()}</td>\n                </tr>`\n            ).join('')}\n        </table>\n    </div>\n    \n    <div class=\"category-section\">\n        <h2>Transaction Details</h2>\n        <table>\n            <tr><th>Date</th><th>Type</th><th>Category</th><th>Description</th><th>Amount</th><th>Source</th></tr>\n            ${data.transactions.map(transaction => \n                `<tr>\n                    <td>${transaction.date}</td>\n                    <td>${transaction.type === 'income' ? 'Income' : 'Expense'}</td>\n                    <td>${transaction.category}</td>\n                    <td>${transaction.description}</td>\n                    <td class=\"${transaction.type === 'income' ? 'positive' : 'negative'}\">$${transaction.amount.toLocaleString()}</td>\n                    <td>${transaction.source}</td>\n                </tr>`\n            ).join('')}\n        </table>\n    </div>\n</body>\n</html>\n`;\n\nreturn [{ json: { htmlContent, reportData: data } }];"
+      },
+      "id": "5d2ec931-22ec-4a1c-943d-5a9ce824813c",
+      "name": "生成报表HTML",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        560,
+        1024
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pdfshift.io/v3/convert/pdf",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-API-Key",
+              "value": "sk_dbb8333c3c9e3a9e1c8b15f5abd6792d7adbb659"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "source",
+              "value": "={{ $json.htmlContent }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "b5b20e6a-e1e7-46f7-9961-29ea5417b2c5",
+      "name": "HTML转PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        944,
+        1024
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "name": "=Financial_Report_{{ $('生成财务数据').item.json.date }}.pdf",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1CKeDGkXV-WvSeucqdurxm31JIhhcQrRI",
+          "mode": "list",
+          "cachedResultName": "financial report03",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1CKeDGkXV-WvSeucqdurxm31JIhhcQrRI"
+        },
+        "options": {}
+      },
+      "id": "a0388658-d864-4e9f-8a78-cae29a35539f",
+      "name": "上传PDF到Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        1360,
+        1024
+      ],
+      "typeVersion": 3,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "vbdaWrMUy7QV10oi",
+          "name": "drive-workshop"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"success\": true,\n  \"message\": \"Expense request approved successfully\",\n  \"data\": {\n    \"requestId\": $json.requestId,\n    \"applicant\": $json.applicant,\n    \"amount\": $json.amount,\n    \"category\": $json.category,\n    \"description\": $json.description,\n    \"department\": $json.department,\n    \"finalStatus\": $json.finalStatus,\n    \"approvalType\": $json.approvalType,\n    \"approvedAt\": $json.approvedAt,\n    \"contractVerified\": $json.contractVerified,\n    \"approvalSteps\": $json.approvalSteps\n  }\n} }}",
+        "options": {}
+      },
+      "id": "24b5d64f-05b4-43bb-a2cf-3ec3efe41b18",
+      "name": "返回审批结果给前端",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [
+        2576,
+        1312
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {
+    "支出申请Webhook": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      },
+      {
+        "json": {
+          "name": "Second item",
+          "code": 2
+        }
+      }
+    ],
+    "Google Drive 文档监控": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      },
+      {
+        "json": {
+          "name": "Second item",
+          "code": 2
+        }
+      }
+    ],
+    "日报表定时触发器": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      },
+      {
+        "json": {
+          "name": "Second item",
+          "code": 2
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Google Drive 文档监控": {
+      "main": [
+        [
+          {
+            "node": "下载文档",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "文档加载器": {
+      "ai_document": [
+        [
+          {
+            "node": "存储向量到Pinecone",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "文本分割器": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "文档加载器",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI 嵌入模型": {
+      "ai_embedding": [
+        [
+          {
+            "node": "存储向量到Pinecone",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "智能问答触发器": {
+      "main": [
+        [
+          {
+            "node": "AI 财务助手",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI 嵌入模型（查询）": {
+      "ai_embedding": [
+        [
+          {
+            "node": "从Pinecone检索向量",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "从Pinecone检索向量": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI 财务助手",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude 财务专家": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI 财务助手",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "支出申请Webhook": {
+      "main": [
+        [
+          {
+            "node": "处理支出申请",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "处理支出申请": {
+      "main": [
+        [
+          {
+            "node": "金额判断",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "金额判断": {
+      "main": [
+        [
+          {
+            "node": "小额审批流程",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "大额审批流程",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "小额审批流程": {
+      "main": [
+        [
+          {
+            "node": "审批完成通知",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "大额审批流程": {
+      "main": [
+        [
+          {
+            "node": "合同检查",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "合同检查": {
+      "main": [
+        [
+          {
+            "node": "审批完成通知",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "审批完成通知": {
+      "main": [
+        [
+          {
+            "node": "归档审批记录",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "归档审批记录": {
+      "main": [
+        [
+          {
+            "node": "存储审批向量",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "返回审批结果给前端",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "下载文档": {
+      "main": [
+        [
+          {
+            "node": "存储向量到Pinecone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "存储审批向量",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "文档加载器1": {
+      "ai_document": [
+        [
+          {
+            "node": "存储审批向量",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "文本分割器1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "文档加载器1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "日报表定时触发器": {
+      "main": [
+        [
+          {
+            "node": "生成财务数据",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "生成财务数据": {
+      "main": [
+        [
+          {
+            "node": "生成报表HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "生成报表HTML": {
+      "main": [
+        [
+          {
+            "node": "HTML转PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML转PDF": {
+      "main": [
+        [
+          {
+            "node": "上传PDF到Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ba0976d5-dbac-47c0-9379-d0039d6be6fe",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5cb72472896fce0666bc03ef84936c4f09ec11e6b4f95f9aebe3d538947c7935"
+  },
+  "id": "0poEkeUI91wgQB42",
+  "tags": [
+    {
+      "createdAt": "2025-09-24T03:55:01.742Z",
+      "updatedAt": "2025-09-24T03:55:01.742Z",
+      "id": "0AQUViqahRR6BqTe",
+      "name": "智能财务管理系统"
+    }
+  ]
+}

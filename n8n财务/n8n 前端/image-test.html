@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-image { 
+            border: 2px solid red; 
+            margin: 10px; 
+            max-width: 200px; 
+            height: auto;
+        }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>图片加载测试</h1>
+    
+    <h2>测试1: 中文路径 (原始)</h2>
+    <img src="设计图/Logo-图标-2.png" alt="Test 1" class="test-image" 
+         onload="console.log('Test 1 loaded successfully')" 
+         onerror="console.log('Test 1 failed to load'); this.nextElementSibling.textContent='加载失败'">
+    <div class="error"></div>
+    
+    <h2>测试2: URL编码路径</h2>
+    <img src="%E8%AE%BE%E8%AE%A1%E5%9B%BE/Logo-%E5%9B%BE%E6%A0%87-2.png" alt="Test 2" class="test-image"
+         onload="console.log('Test 2 loaded successfully')" 
+         onerror="console.log('Test 2 failed to load'); this.nextElementSibling.textContent='加载失败'">
+    <div class="error"></div>
+    
+    <h2>测试3: 相对路径</h2>
+    <img src="./设计图/Logo-图标-2.png" alt="Test 3" class="test-image"
+         onload="console.log('Test 3 loaded successfully')" 
+         onerror="console.log('Test 3 failed to load'); this.nextElementSibling.textContent='加载失败'">
+    <div class="error"></div>
+    
+    <h2>测试4: 其他图片 (对比)</h2>
+    <img src="设计图/Logo.png" alt="Test 4" class="test-image"
+         onload="console.log('Test 4 loaded successfully')" 
+         onerror="console.log('Test 4 failed to load'); this.nextElementSibling.textContent='加载失败'">
+    <div class="error"></div>
+    
+    <script>
+        // 检查所有图片的加载状态
+        setTimeout(() => {
+            const images = document.querySelectorAll('.test-image');
+            images.forEach((img, index) => {
+                console.log(`Image ${index + 1}:`, {
+                    src: img.src,
+                    complete: img.complete,
+                    naturalWidth: img.naturalWidth,
+                    naturalHeight: img.naturalHeight
+                });
+            });
+        }, 2000);
+    </script>
+</body>
+</html>
+

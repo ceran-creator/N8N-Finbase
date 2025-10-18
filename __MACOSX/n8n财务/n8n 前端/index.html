@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n Intelligent Finance - Sign In</title>
+    <link rel="stylesheet" href="login-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <!-- Left: Sign-in methods -->
+        <div class="login-left">
+            <div class="login-content">
+                <!-- Logo -->
+                <div class="login-logo">
+                    <img src="设计图/Logo.png" alt="n8n Logo" class="logo-image">
+                </div>
+
+                <!-- Continue with phone section -->
+                <div class="login-channels">
+                    <h2 class="login-title">Welcome to n8n Finance</h2>
+                    <p class="login-subtitle">Intelligent Financial Management System</p>
+                    
+                    <!-- Sign-in buttons -->
+                    <div class="login-buttons">
+                        <!-- Sign in with Google -->
+                        <button class="login-btn google-btn" id="googleLogin">
+                            <div class="btn-icon">
+                                <i class="fab fa-google"></i>
+                            </div>
+                            <span class="btn-text">Sign in with Google</span>
+                        </button>
+
+                        <!-- Sign in with Email -->
+                        <button class="login-btn email-btn" id="emailLogin">
+                            <div class="btn-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span class="btn-text">Sign in with email</span>
+                        </button>
+
+                        <!-- Founder registration -->
+                        <button class="login-btn founder-btn" id="founderRegistration">
+                            <div class="btn-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <span class="btn-text">Founder registration</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Phone number input -->
+                    <div class="phone-input-section">
+                        <div class="phone-input-wrapper">
+                            <input type="tel" id="phoneNumber" class="phone-input" placeholder="Enter your phone number" maxlength="11">
+                        </div>
+                    </div>
+                    
+                    <!-- Continue with phone button -->
+                    <div class="continue-phone-section">
+                        <button class="continue-phone-btn" id="continueWithPhone">
+                            <div class="btn-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <span class="btn-text">Continue with phone</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Advertisement -->
+        <div class="login-right">
+            <div class="advertisement-content">
+                <img src="设计图/Log in-广告.png" alt="Product advertisement" class="advertisement-img">
+            </div>
+        </div>
+    </div>
+
+
+    <script src="login-script.js"></script>
+</body>
+</html>
