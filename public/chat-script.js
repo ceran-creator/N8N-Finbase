@@ -4,6 +4,7 @@ class ChatInterface {
     constructor() {
         this.messages = [];
         this.isTyping = false;
+        this.apiUrl = 'https://lynn-cafa-system.app.n8n.cloud/webhook/financial-chat-webhook/chat';
         this.init();
     }
 
@@ -16,6 +17,7 @@ class ChatInterface {
         // 延迟初始化侧边栏，确保DOM完全加载
         setTimeout(() => {
             this.initializeSidebar();
+            this.testConnection();
         }, 100);
     }
 
@@ -89,7 +91,7 @@ class ChatInterface {
         });
     }
 
-    sendMessage() {
+    async sendMessage() {
         const chatInput = document.getElementById('chatInput');
         const message = chatInput.value.trim();
 
@@ -104,12 +106,18 @@ class ChatInterface {
         // Show typing indicator
         this.showTypingIndicator();
 
-        // Simulate AI response
-        setTimeout(() => {
+        try {
+            // Call n8n AI API
+            const aiResponse = await this.callFinancialAI(message);
+            this.updateConnectionStatus(true);
             this.hideTypingIndicator();
-            const aiResponse = this.generateAIResponse(message);
             this.addMessage('ai', aiResponse);
-        }, 1500 + Math.random() * 1000);
+        } catch (error) {
+            this.hideTypingIndicator();
+            console.error('AI API Error:', error);
+            const errorMessage = this.handleAPIError(error);
+            this.addMessage('ai', errorMessage);
+        }
     }
 
     addMessage(type, content) {
@@ -186,6 +194,87 @@ class ChatInterface {
             typingIndicator.remove();
         }
         this.isTyping = false;
+    }
+
+    async callFinancialAI(message) {
+        try {
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'sendMessage',
+                    chatInput: message
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            
+            // 处理n8n返回的数据格式
+            if (data.output) {
+                return data.output;
+            } else if (data.message) {
+                return data.message;
+            } else if (typeof data === 'string') {
+                return data;
+            } else {
+                return JSON.stringify(data, null, 2);
+            }
+        } catch (error) {
+            console.error('Financial AI API Error:', error);
+            throw error;
+        }
+    }
+
+    handleAPIError(error) {
+        this.updateConnectionStatus(false);
+        if (error.message.includes('Failed to fetch')) {
+            return '抱歉，无法连接到AI财务助手。请检查网络连接或稍后重试。';
+        } else if (error.message.includes('HTTP 4')) {
+            return '请求格式有误，请重新输入您的问题。';
+        } else if (error.message.includes('HTTP 5')) {
+            return 'AI财务助手暂时不可用，请稍后重试。';
+        } else {
+            return `抱歉，发生了错误：${error.message}。请稍后重试。`;
+        }
+    }
+
+    async testConnection() {
+        try {
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'sendMessage',
+                    chatInput: '测试连接'
+                })
+            });
+
+            if (response.ok) {
+                this.updateConnectionStatus(true);
+                console.log('AI财务助手连接成功');
+            } else {
+                throw new Error(`HTTP ${response.status}`);
+            }
+        } catch (error) {
+            this.updateConnectionStatus(false);
+            console.warn('AI财务助手连接失败:', error.message);
+        }
+    }
+
+    updateConnectionStatus(isConnected) {
+        const statusElement = document.getElementById('connectionStatus');
+        if (statusElement) {
+            statusElement.textContent = isConnected ? '🟢' : '🔴';
+            statusElement.title = isConnected ? 'AI助手在线' : 'AI助手离线';
+        }
     }
 
     generateAIResponse(userMessage) {

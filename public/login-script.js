@@ -13,10 +13,6 @@ class LoginPage {
     // Bind event listeners
     bindEvents() {
         // Sign-in buttons
-        document.getElementById('googleLogin').addEventListener('click', () => {
-            this.handleGoogleLogin();
-        });
-
         document.getElementById('emailLogin').addEventListener('click', () => {
             this.handleEmailLogin();
         });

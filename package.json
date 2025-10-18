@@ -1,0 +1,18 @@
+{ 
+  "name": "n8n-finbase", 
+  "version": "1.0.0", 
+  "description": "N8N财务管理系统 - 基于n8n的财务自动化解决方案", 
+  "main": "public/index.html", 
+  "scripts": { 
+    "build": "echo 'Static site - no build needed'", 
+    "start": "echo 'Static site - no start needed'" 
+  }, 
+  "keywords": [ 
+    "n8n", 
+    "finance", 
+    "automation", 
+    "financial-management" 
+  ], 
+  "author": "ceran-creator", 
+  "license": "MIT" 
+} 

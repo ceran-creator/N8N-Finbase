@@ -249,19 +249,21 @@ body {
 }
 
 .sidebar.collapsed .nav-icon {
-    width: 32px; /* 保持与正常状态相同的尺寸 */
-    height: 32px; /* 确保始终为正圆形 */
-    font-size: var(--font-size-sm); /* 使用标准字体大小 */
+    width: 37px; /* 与正常状态保持一致 */
+    height: 37px; /* 与正常状态保持一致 */
+    font-size: var(--font-size-base); /* 与正常状态保持一致 */
     margin: 0 auto;
     border-radius: 50%; /* 明确指定圆形 */
     flex-shrink: 0; /* 防止被压缩变形 */
 }
 
-.sidebar.collapsed .logo-icon {
-    width: 41px; /* 等比放大5个单位 */
-    height: 41px;
-    margin: 0 auto;
+.sidebar.collapsed .sidebar-bottom .nav-icon {
+    width: 32px; /* 设置和用户保持原大小 */
+    height: 32px; /* 设置和用户保持原大小 */
+    font-size: var(--font-size-sm); /* 设置和用户保持原字体大小 */
 }
+
+/* Logo icon removed */
 
 .sidebar.collapsed .sidebar-toggle i {
     transform: rotate(180deg);
@@ -284,45 +286,16 @@ body {
 .sidebar-bottom .nav-icon {
     background: linear-gradient(135deg, var(--primary-100), var(--secondary-100));
     color: white;
-    width: 32px;
-    height: 32px;
+    width: 32px; /* 保持原大小 */
+    height: 32px; /* 保持原大小 */
     border-radius: 50%;
     box-shadow: var(--shadow-sm);
+    font-size: var(--font-size-sm); /* 保持原字体大小 */
+    min-width: 32px; /* 确保最小宽度 */
+    min-height: 32px; /* 确保最小高度 */
 }
 
-.logo-section {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-3);
-    padding: var(--spacing-3) 0; /* 去掉长方形底框的视觉占位 */
-    background: transparent; /* 移除底框背景 */
-    border-radius: 0; /* 移除圆角 */
-    border: none; /* 移除边框 */
-}
-
-.logo-icon {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: var(--font-size-xl);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-}
-
-.logo-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.logo-text {
-    display: none; /* 始终隐藏品牌文案 */
-}
+/* Logo section removed */
 
 .nav-menu {
     display: flex;
@@ -366,20 +339,20 @@ body {
 }
 
 .nav-icon {
-    width: 32px;
-    height: 32px;
+    width: 37px; /* 放大5px */
+    height: 37px; /* 放大5px */
     background: var(--gray-100);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-base); /* 相应放大字体 */
     color: var(--gray-600);
     transition: all var(--transition-fast);
     box-shadow: var(--shadow-sm);
     flex-shrink: 0; /* 防止被压缩变形 */
-    min-width: 32px; /* 确保最小宽度 */
-    min-height: 32px; /* 确保最小高度 */
+    min-width: 37px; /* 确保最小宽度 */
+    min-height: 37px; /* 确保最小高度 */
 }
 
 .nav-item:hover .nav-icon {
@@ -547,7 +520,8 @@ body {
     object-fit: contain;
 }
 
-/* Accounting和Supervise模块的icon去掉圆形底 */
+/* Funds、Accounting和Supervise模块的icon去掉圆形底 */
+.module-card[data-module="funds"] .module-icon,
 .module-card[data-module="reports"] .module-icon,
 .module-card[data-module="compliance"] .module-icon {
     background: transparent;
@@ -642,7 +616,7 @@ body {
 /* 聊天输入框 - 跟随main body工作区，1:6比例 */
 .chat-panel {
     position: fixed;
-    bottom: -64px; /* 默认仅露出顶部约16px，降低可见性但可被悬停 */
+    bottom: -40px; /* 增加可见性，露出更多部分 */
     left: 50%;
     transform: translateX(-50%);
     width: 600px; /* 1:6比例 */
@@ -657,13 +631,13 @@ body {
     z-index: 1000;
     backdrop-filter: blur(10px);
     transition: bottom var(--transition-normal), opacity var(--transition-normal), box-shadow var(--transition-normal);
-    opacity: 0.35; /* 降低可见性 */
+    opacity: 0.6; /* 增加可见性，提供更好的暗示 */
 }
 
 /* 悬停或获得焦点时完全显示并可交互 */
 .chat-panel:hover,
 .chat-panel:focus-within {
-    bottom: 40px; /* 上浮露出全部 */
+    bottom: 60px; /* 增加上浮距离，确保完整显示 */
     opacity: 1;
     box-shadow: var(--shadow-xl);
 }
@@ -682,14 +656,7 @@ body {
     pointer-events: none;
 }
 
-/* 跟随侧边栏状态调整位置 */
-.sidebar.collapsed ~ .main-content + .chat-panel {
-    left: calc(50% + 100px); /* 侧边栏折叠时向右偏移 */
-}
-
-.sidebar.collapsed ~ .main-content + .chat-panel {
-    left: calc(50% + 100px);
-}
+/* 跟随侧边栏状态调整位置 - 通过JavaScript动态控制，避免CSS冲突 */
 
 /* 删除聊天头部样式 */
 
@@ -804,9 +771,7 @@ body {
         height: 70px;
     }
     
-    .sidebar.collapsed ~ .main-content + .chat-panel {
-        left: calc(50% + 80px);
-    }
+    /* 平板端移动逻辑通过JavaScript控制 */
     
     .modules-grid.three-modules {
         grid-template-columns: repeat(2, 1fr);
@@ -839,6 +804,12 @@ body {
     
     .nav-item {
         white-space: nowrap;
+    }
+    
+    .sidebar-bottom {
+        margin-top: var(--spacing-4);
+        padding-top: var(--spacing-2);
+        border-top: 1px solid var(--gray-200);
     }
     
     .main-content {
@@ -891,9 +862,7 @@ body {
         opacity: 1;
     }
     
-    .sidebar.collapsed ~ .main-content + .chat-panel {
-        left: 10px;
-    }
+    /* 移动端移动逻辑通过JavaScript控制 */
     
     .modules-grid.three-modules {
         grid-template-columns: 1fr;

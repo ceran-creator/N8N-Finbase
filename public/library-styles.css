@@ -182,9 +182,9 @@
 .search-icon-btn {
     width: 40px;
     height: 40px;
-    background: var(--gray-100);
-    border: 1px solid var(--gray-200);
-    border-radius: 50%;
+    background: transparent;
+    border: none;
+    border-radius: 0;
     color: var(--gray-600);
     font-size: var(--font-size-base);
     cursor: pointer;
@@ -192,12 +192,11 @@
     align-items: center;
     justify-content: center;
     transition: all var(--transition-normal);
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
 }
 
 .search-icon-btn:hover {
     background: var(--primary-100);
-    border-color: var(--primary-300);
     color: var(--primary-600);
     transform: scale(1.05);
     box-shadow: var(--shadow-md);
@@ -475,8 +474,8 @@
 
 /* Recent Files横向布局 */
 .recent-files-horizontal .file-card {
-    flex: 0 0 300px;
-    min-width: 300px;
+    flex: 0 0 350px;
+    min-width: 350px;
     background: white;
     border: 1px solid var(--gray-200);
     box-shadow: var(--shadow-sm);
@@ -510,14 +509,14 @@
 
 /* Public Files横向布局 */
 .public-files-horizontal .file-card {
-    flex: 0 0 300px;
-    min-width: 300px;
+    flex: 0 0 350px;
+    min-width: 350px;
 }
 
 /* 文件卡片 */
 .file-card {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* 改为顶部对齐，适应多行文件名 */
     gap: var(--spacing-4);
     padding: var(--spacing-5);
     background: white;
@@ -529,6 +528,8 @@
     box-shadow: var(--shadow-sm);
     backdrop-filter: blur(10px);
     overflow: hidden;
+    min-height: 80px; /* 设置最小高度确保一致性 */
+    height: auto; /* 允许高度自适应 */
 }
 
 .file-card::before {
@@ -574,6 +575,7 @@
     box-shadow: var(--shadow-sm);
     position: relative;
     overflow: hidden;
+    margin-top: 2px; /* 微调图标位置，使其在顶部对齐时更美观 */
 }
 
 .file-icon::before {
@@ -600,6 +602,8 @@
 .file-info {
     flex: 1;
     min-width: 0;
+    max-width: calc(100% - 120px); /* 为图标和操作按钮预留空间 */
+    padding-right: var(--spacing-2); /* 增加右边距 */
 }
 
 .file-name {
@@ -607,8 +611,12 @@
     font-weight: 600;
     color: var(--gray-800);
     margin: 0 0 var(--spacing-1) 0;
-    white-space: nowrap;
+    line-height: 1.4;
+    word-break: break-word;
     overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 最多显示2行 */
+    -webkit-box-orient: vertical;
     text-overflow: ellipsis;
 }
 
@@ -833,13 +841,13 @@
     
     /* 横向滚动响应式 */
     .recent-files-horizontal .file-card {
-        flex: 0 0 250px;
-        min-width: 250px;
+        flex: 0 0 300px;
+        min-width: 300px;
     }
     
     .public-files-horizontal .file-card {
-        flex: 0 0 270px;
-        min-width: 270px;
+        flex: 0 0 320px;
+        min-width: 320px;
     }
 }
 
@@ -882,13 +890,13 @@
     
     /* 移动端横向滚动优化 */
     .recent-files-horizontal .file-card {
-        flex: 0 0 220px;
-        min-width: 220px;
+        flex: 0 0 280px;
+        min-width: 280px;
     }
     
     .public-files-horizontal .file-card {
-        flex: 0 0 240px;
-        min-width: 240px;
+        flex: 0 0 300px;
+        min-width: 300px;
     }
     
     .file-permission {
@@ -929,13 +937,13 @@
     
     /* 小屏幕横向滚动优化 */
     .recent-files-horizontal .file-card {
-        flex: 0 0 200px;
-        min-width: 200px;
+        flex: 0 0 250px;
+        min-width: 250px;
     }
     
     .public-files-horizontal .file-card {
-        flex: 0 0 220px;
-        min-width: 220px;
+        flex: 0 0 270px;
+        min-width: 270px;
     }
     
     .file-permission {

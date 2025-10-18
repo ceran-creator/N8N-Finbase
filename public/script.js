@@ -401,14 +401,18 @@ class FinancialDashboard {
         this.restoreSidebarState();
     }
 
-    // 调整Chat面板位置
+    // 调整Chat面板位置 - 优化移动逻辑
     adjustChatPanelPosition(isCollapsed) {
         const chatPanel = document.querySelector('.chat-panel');
         if (chatPanel) {
             if (isCollapsed) {
-                chatPanel.style.left = 'calc(50% + 100px)';
+                // 侧边栏折叠时，向右偏移80px（侧边栏宽度的一半）
+                chatPanel.style.left = 'calc(50% + 40px)';
+                chatPanel.style.transform = 'translateX(-50%)';
             } else {
+                // 侧边栏展开时，保持居中
                 chatPanel.style.left = '50%';
+                chatPanel.style.transform = 'translateX(-50%)';
             }
         }
     }

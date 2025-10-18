@@ -49,6 +49,15 @@
     color: var(--gray-800);
     margin: 0 0 2px 0;
     line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.connection-status {
+    font-size: 12px;
+    cursor: help;
+    transition: all var(--transition-fast);
 }
 
 .chat-subtitle {
@@ -478,21 +487,21 @@
 }
 
 .user-message .message-content {
-    background: #E3F2FD;
-    color: var(--gray-800);
+    background: #FAFDFF;
+    color: white;
     padding: var(--spacing-4);
     border-radius: var(--radius-xl);
     border-bottom-left-radius: var(--radius-sm);
-    border: 1px solid #BBDEFB;
+    border: 1px solid #F0F8FF;
 }
 
 .user-message .message-content p {
-    color: var(--gray-800);
+    color: white;
     margin: 0;
 }
 
 .user-message .message-avatar {
-    background: #2196F3;
+    background: #90CAF9;
     color: white;
     font-weight: 600;
     font-size: var(--font-size-sm);
